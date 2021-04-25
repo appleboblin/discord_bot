@@ -7,6 +7,7 @@ const https = require('https');
 const client = new Discord.Client();
 
 // Bot login
+client.login(process.env.BOT_TOKEN)
 
 // Adding Twitter forward function
 const Twit = require('twit');
