@@ -76,3 +76,9 @@ client.on('message', (msg) => {
       );
     }
 });
+
+//Set Status
+client.on('ready', () => {
+    client.user.setPresence({ game: { name: 'Jojo | ./stupid' }, status: 'online' })
+    console.log(`${client.user.username} is up and running!`);
+})
