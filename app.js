@@ -96,7 +96,12 @@ client.on('message', function(message) {
     }
 });
 
-
+client.on('message', (msg) => {
+    if (msg.content === 'horse girl') {
+      msg.react('🐴');
+      msg.react('👧');
+    }
+});    
 //Set Status
 client.once('ready', () => {
     console.log(`${client.user.username} is up and running!`);
