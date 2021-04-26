@@ -81,26 +81,24 @@ client.on('message', function(message) {
     const command = args.shift().toLowerCase();
 
     if ( command === 'stupid') {
-        message.channel.send('You stupid.'
-      );
+        message.channel.send('You stupid.');
     }
 
     if ( command === 'jono') {
-        message.channel.send(message.author.username + ', Jono agrees that you are stupid'
-      );
+        message.channel.send(message.author.username + ', Jono agrees that you are stupid');
     }
 
     if ( command === 'nick') {
-        message.channel.send(message.member.displayName + ', Jono agrees that you are stupid'
-      );
+        message.channel.send(message.member.displayName + ', Jono agrees that you are stupid');
     }
 });
 
-client.on('message', (msg) => {
-    if (msg.content === 'horse girl') {
-      msg.react('🐴');
-      msg.react('👧');
-    }
+client.on('message', function(message) {
+    if (message.author.bot) return;
+    if (message.content.includes('horse girl')) {
+        message.react('🐴');
+        message.react('👧');
+    };
 });    
 //Set Status
 client.once('ready', () => {
