@@ -1,14 +1,14 @@
 // Initalize
 require('dotenv').config();
 const Discord = require('discord.js');
-const fetch = require("node-fetch");
-const https = require('https');
+//const fetch = require("node-fetch");
+//const https = require('https');
 // Start Discord.js
 const client = new Discord.Client();
 
 // Bot login
 client.login(process.env.BOT_TOKEN)
-
+/*
 // Adding Twitter forward function
 const Twit = require('twit');
 const T = new Twit({
@@ -22,6 +22,7 @@ const T = new Twit({
 
 // Destination channel Twitter forwards
 const dest = '835471079303544834';
+
 // Create a stream to follow tweets
 const stream = T.stream('statuses/filter', {
   follow: '1179802346643021825', // @applenugget285
@@ -33,6 +34,7 @@ const options = {
       'Authorization' : 'Bearer ' + process.env.BEARER_TOKEN
     }
 };
+
 
 // Get live Tweet
 var imgUrl = '';
@@ -68,17 +70,42 @@ stream.on('tweet', (tweet) => {
         return;
     }, 5000);
 });
+*/
+// Commands
+const prefix = './';
+client.on('message', function(message) {
+    if (message.author.bot) return;
+    if (!message.content.startsWith(prefix)) return;
+    const commandBody = message.content.slice(prefix.length);
+    const args = commandBody.split(' ');
+    const command = args.shift().toLowerCase();
 
-// Random
-client.on('message', (msg) => {
-    if (msg.content === './stupid') {
-        msg.channel.send('you stupid'
+    if ( command === 'stupid') {
+        message.channel.send('You stupid.'
+      );
+    }
+
+    if ( command === 'jono') {
+        message.channel.send(message.author.username + ', Jono agrees that you are stupid'
+      );
+    }
+
+    if ( command === 'nick') {
+        message.channel.send(message.member.displayName + ', Jono agrees that you are stupid'
       );
     }
 });
 
+
 //Set Status
-client.on('ready', () => {
-    client.user.setPresence({ game: { name: 'Jojo | ./stupid' }, status: 'online' })
+client.once('ready', () => {
     console.log(`${client.user.username} is up and running!`);
-})
+
+    client.user.setPresence({
+        status: 'available',
+        activity: {
+            name: 'Twitter why you limit my api access',
+            type: 'PLAYING',
+        }
+    });
+});
