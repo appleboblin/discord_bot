@@ -72,12 +72,18 @@ stream.on('tweet', (tweet) => {
 });
 */
 // Commands
+// Set prefix
 const prefix = './';
 client.on('message', function(message) {
+    // Check if bot sends the message. 
     if (message.author.bot) return;
+    // Looks for message starting with prefix
     if (!message.content.startsWith(prefix)) return;
+    // Remove prefix
     const commandBody = message.content.slice(prefix.length);
+    // split into arrays of strings when there is space
     const args = commandBody.split(' ');
+    // Make it lower case and assign to 'command'
     const command = args.shift().toLowerCase();
 
     if ( command === 'stupid') {
