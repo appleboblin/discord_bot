@@ -93,6 +93,7 @@ client.on('message', function(message) {
     }
 });
 
+// React to phrase
 client.on('message', function(message) {
     if (message.author.bot) return;
     if (message.content.includes('horse girl')) {
@@ -100,6 +101,7 @@ client.on('message', function(message) {
         message.react('👧');
     };
 });    
+
 //Set Status
 client.once('ready', () => {
     console.log(`${client.user.username} is up and running!`);
