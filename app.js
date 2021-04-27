@@ -8,7 +8,7 @@ const client = new Discord.Client();
 
 // Bot login
 client.login(process.env.BOT_TOKEN)
-
+/*
 // Adding Twitter forward function
 const Twit = require('twit');
 const T = new Twit({
@@ -71,7 +71,7 @@ stream.on('tweet', (tweet) => {
         return;
     }, 120000);
 });
-
+*/
 // Commands
 // Set prefix
 const prefix = './';
@@ -116,7 +116,7 @@ client.once('ready', () => {
     client.user.setPresence({
         status: 'available',
         activity: {
-            name: 'Twitter why you limit my api access',
+            name: 'Twitter why are you limiting my api access?',
             type: 'PLAYING',
         }
     });
