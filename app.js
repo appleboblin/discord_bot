@@ -1,14 +1,14 @@
 // Initalize
 require('dotenv').config();
 const Discord = require('discord.js');
-//const fetch = require("node-fetch");
-//const https = require('https');
+const fetch = require("node-fetch");
+const https = require('https');
 // Start Discord.js
 const client = new Discord.Client();
 
 // Bot login
 client.login(process.env.BOT_TOKEN)
-/*
+
 // Adding Twitter forward function
 const Twit = require('twit');
 const T = new Twit({
@@ -21,11 +21,11 @@ const T = new Twit({
 });
 
 // Destination channel Twitter forwards
-const dest = '835471079303544834';
+const dest = '723911584761774080';
 
 // Create a stream to follow tweets
 const stream = T.stream('statuses/filter', {
-  follow: '1179802346643021825', // @applenugget285
+  follow: '1382194772023123969', // @applenugget285
 });
 
 // Authorization to get json
@@ -57,6 +57,7 @@ stream.on('tweet', (tweet) => {
                     imgUrl = json['includes']['media'].forEach(e => {
                          //Send when getting info
                          client.channels.cache.get(dest).send(e['url']);
+                         console.log("update")
                     })
                 } catch (error) {
                 console.error(error.message);
@@ -68,9 +69,9 @@ stream.on('tweet', (tweet) => {
     setTimeout(function(){
         setimgUrl();
         return;
-    }, 5000);
+    }, 120000);
 });
-*/
+
 // Commands
 // Set prefix
 const prefix = './';
