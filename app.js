@@ -98,6 +98,54 @@ client.on('message', function(message) {
     if ( command === 'nick') {
         message.channel.send(message.member.displayName + ', Jono agrees that you are stupid');
     }
+
+    if ( command === 'url') {
+        message.channel.send(message.author.displayAvatarURL("jpg"));
+    }
+
+    if ( command === 'help') {
+        message.channel.send({embed: {
+            color: 15277667,
+            author: {
+              name: "Ding Ding",
+              icon_url: client.user.avatarURL()
+            },
+            title: "Stupid Commands I Got So Far.",
+            url: "https://youtu.be/dQw4w9WgXcQ",
+            description: "Don't click it.",
+            fields: [{
+                name: "./help",
+                value: "This embed message"
+              },
+              {
+                name: "./stupid",
+                value: "Prints out `You Stupid`"
+              },
+              {
+                name: "./jono",
+                value: "Prints out `username, Jono agrees that you are stupid`"
+              },
+              {
+                name: "./nick",
+                value: "Prints out `nickname, Jono agrees that you are stupid`"
+              },
+              {
+                name: "horse girl",
+                value: "Any message that contains `horse girl`, bot will react 🐴 👧"
+              },
+              {
+                name: "./url",
+                value: "Return your avatarURL"
+              },
+            ],
+            timestamp: new Date(),
+            footer: {
+              icon_url: "https://cdn.discordapp.com/avatars/199872338609569792/d2ebe56ba66a5f95db256e48ed41c752.webp",
+              text: "Jobo the Bot"
+            }
+          }
+        });
+    }
 });
 
 // React to phrase
@@ -107,7 +155,7 @@ client.on('message', function(message) {
         message.react('🐴');
         message.react('👧');
     };
-});    
+});       
 
 //Set Status
 client.once('ready', () => {
