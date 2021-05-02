@@ -108,7 +108,7 @@ client.on('message', function(message) {
             color: 15277667,
             author: {
               name: "Ding Ding",
-              icon_url: client.user.avatarURL()
+              icon_url: "https://cdn.discordapp.com/avatars/199872338609569792/d2ebe56ba66a5f95db256e48ed41c752.webp"
             },
             title: "Stupid Commands I Got So Far.",
             url: "https://youtu.be/dQw4w9WgXcQ",
