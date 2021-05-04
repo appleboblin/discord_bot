@@ -110,10 +110,6 @@ client.on('message', function(message) {
         message.channel.send(message.channel.id);
     }
 
-    if ( command === 'cloud') {
-        message.channel.send(function end(words) { console.log(JSON.stringify(words)); } );
-    }
-
     if ( command === 'fetch') {
         const channel = client.channels.cache.get(message.channel.id);
         channel.messages.fetch({ limit: 100 }).then(messages => {
