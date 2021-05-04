@@ -1,14 +1,16 @@
 // Initalize
 require('dotenv').config();
 const Discord = require('discord.js');
-const fetch = require("node-fetch");
+const fetch = require('node-fetch');
 const https = require('https');
+const fs = require('fs');
+
 // Start Discord.js
 const client = new Discord.Client();
 
 // Bot login
 client.login(process.env.BOT_TOKEN)
-/*
+
 // Adding Twitter forward function
 const Twit = require('twit');
 const T = new Twit({
@@ -25,9 +27,10 @@ const dest = '723911584761774080';
 
 // Create a stream to follow tweets
 const stream = T.stream('statuses/filter', {
-  follow: '1382194772023123969', // @applenugget285
+  follow: '1382194772023123969', // @BrgrArt
 });
-
+//1382194772023123969 @BrgrArt
+//1179802346643021825 @applenugget285
 // Authorization to get json
 const options = {
     headers: {
@@ -57,7 +60,7 @@ stream.on('tweet', (tweet) => {
                     imgUrl = json['includes']['media'].forEach(e => {
                          //Send when getting info
                          client.channels.cache.get(dest).send(e['url']);
-                         console.log("update")
+                         console.log("New image sent to channel")
                     })
                 } catch (error) {
                 console.error(error.message);
@@ -71,7 +74,7 @@ stream.on('tweet', (tweet) => {
         return;
     }, 120000);
 });
-*/
+
 // Commands
 // Set prefix
 const prefix = './';
@@ -82,7 +85,7 @@ client.on('message', function(message) {
     if (!message.content.startsWith(prefix)) return;
     // Remove prefix
     const commandBody = message.content.slice(prefix.length);
-    // split into arrays of strings when there is space
+    // Split into arrays of strings when there is space
     const args = commandBody.split(' ');
     // Make it lower case and assign to 'command'
     const command = args.shift().toLowerCase();
@@ -101,6 +104,50 @@ client.on('message', function(message) {
 
     if ( command === 'url') {
         message.channel.send(message.author.displayAvatarURL("jpg"));
+    }
+
+    if ( command === 'channel') {
+        message.channel.send(message.channel.id);
+    }
+
+    if ( command === 'cloud') {
+        message.channel.send(function end(words) { console.log(JSON.stringify(words)); } );
+    }
+
+    if ( command === 'fetch') {
+        const channel = client.channels.cache.get(message.channel.id);
+        channel.messages.fetch({ limit: 100 }).then(messages => {
+            console.log(`Received ${messages.size} messages`);
+            // Get dates
+            let date_ob = new Date();
+            // Current date
+            // Adjust 0 before single digit date
+            let date = ("0" + date_ob.getDate()).slice(-2);
+            // Current month
+            let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
+            // Current year
+            let year = date_ob.getFullYear();
+            // Current hours
+            let hours = date_ob.getHours();
+            // Current minutes
+            let minutes = date_ob.getMinutes();
+            // Current seconds
+            let seconds = date_ob.getSeconds();
+            // Set path and unique file name
+            let dir = "./fetch/" + year + "-" + month + "-" + date + "_" + hours + ":" + minutes + ":" + seconds + ".json";
+            // Create empty array
+            let discordMessage = [];
+            // Add each message to array
+            messages.forEach(message => discordMessage.push(message.content))
+            // Save array to file
+            fs.writeFileSync(dir, JSON.stringify(discordMessage, null, 4));
+            console.log(`Saved messages to ${dir} `);
+            // Send file to channel
+            message.channel.send({
+              files: [dir]
+            });
+
+          });
     }
 
     if ( command === 'help') {
@@ -137,6 +184,10 @@ client.on('message', function(message) {
                 name: "./url",
                 value: "Return your avatarURL"
               },
+              {
+                name: "./fetch",
+                value: "Fetch 100 most recent messages from the channel and send as `.json`"
+              },
             ],
             timestamp: new Date(),
             footer: {
@@ -164,7 +215,7 @@ client.once('ready', () => {
     client.user.setPresence({
         status: 'available',
         activity: {
-            name: 'Twitter why are you limiting my api access?',
+            name: 'Fake Jono 1.0',
             type: 'PLAYING',
         }
     });
