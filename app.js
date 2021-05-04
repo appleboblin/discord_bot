@@ -166,7 +166,7 @@ client.on('message', function(message) {
               },
               {
                 name: "./stupid",
-                value: "Prints out `You Stupid`"
+                value: "Prints out `You Stupid.`"
               },
               {
                 name: "./jono",
