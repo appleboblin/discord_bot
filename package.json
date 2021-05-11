@@ -14,7 +14,9 @@
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
     "node-fetch": "^2.6.1",
+    "opusscript": "0.0.8",
     "twit": "^2.2.11",
-    "wordcloud": "^1.2.1"
+    "wordcloud": "^1.2.1",
+    "ytdl-core": "^4.7.0"
   }
 }
