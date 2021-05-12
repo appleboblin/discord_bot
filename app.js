@@ -452,3 +452,9 @@ client.once("reconnecting", () => {
 client.once("disconnect", () => {
   logger.info(`${client.user.username} is disconnected.`);
 });
+
+// Set bot name
+client.on('ready', function() {
+  client.user.setUsername("JoBot");
+  logger.info("Bot Name set")
+});
