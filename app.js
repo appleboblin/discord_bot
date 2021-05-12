@@ -5,12 +5,33 @@ const fetch = require('node-fetch');
 const https = require('https');
 const fs = require('fs');
 const ytdl = require("ytdl-core");
-
+var winston = require('winston');
+require('winston-daily-rotate-file');
 // Start Discord.js
 const client = new Discord.Client();
 // Bot login
 client.login(process.env.BOT_TOKEN)
-/*
+// Logging config
+
+const logConfiguration = {
+  transports: [
+      new winston.transports.Console(),
+      new winston.transports.DailyRotateFile({
+        filename: 'logs/Discord-%DATE%.log',
+        datePattern: 'YYYY-MM-DD-HH',
+        maxSize: '20m',
+        maxFiles: '14d'
+      })
+  ],
+  format: winston.format.combine(
+      winston.format.timestamp({
+         format: 'MMM-DD-YYYY HH:mm:ss'
+     }),
+      winston.format.printf(info => `${info.level}: ${[info.timestamp]}: ${info.message}`),
+  )
+};
+const logger = winston.createLogger(logConfiguration);
+
 // Adding Twitter forward function
 const Twit = require('twit');
 const T = new Twit({
@@ -21,7 +42,7 @@ const T = new Twit({
   bearer_token: process.env.BEARER_TOKEN,
   timeout_ms: 60 * 1000,
 });
-
+/*
 // Destination channel Twitter forwards
 const dest = '723911584761774080';
 
@@ -60,10 +81,10 @@ stream.on('tweet', (tweet) => {
                     imgUrl = json['includes']['media'].forEach(e => {
                          //Send when getting info
                          client.channels.cache.get(dest).send(e['url']);
-                         console.log("New image sent to channel")
+                         logger.info("New image sent to channel")
                     })
                 } catch (error) {
-                console.error(error.message);
+                logger.error(error.message);
                 };
             });
         });
@@ -92,37 +113,48 @@ client.on('message', async message => {
     // Make it lower case and assign to 'command'
     const command = args.shift().toLowerCase();
     */
-    //music
+   // Music Que constant
     const serverQueue = queue.get(message.guild.id);
-
+    let guildname = message.guild.name
+    let guildid = message.guild.id
+    let channelname = message.channel.name
+    let channelid = message.channel.id
+    // Commands
     if (message.content.startsWith(`${prefix}play`)) {
       execute(message, serverQueue);
+      logger.info("Music added to quequ");
       return;
     } else if (message.content.startsWith(`${prefix}skip`)) {
       skip(message, serverQueue);
+      logger.info("Skipped track");
       return;
     } else if (message.content.startsWith(`${prefix}stop`)) {
       stop(message, serverQueue);
+      logger.info("Music stopped");
       return;
     } else if (message.content.startsWith(`${prefix}stupid`)) {
       message.channel.send('You stupid.');
+      logger.info("Send './stupid' to Server: " + guildname + "(" + guildid + ")"+ ", Channel: " + channelname + "(" + channelid + ")")
       return;
     } else if (message.content.startsWith(`${prefix}jono`)) {
       message.channel.send(message.author.username + ', Jono agrees that you are stupid');
+      logger.info("Send './jono' to Server: " + guildname + "(" + guildid + ")"+ ", Channel: " + channelname + "(" + channelid + ")")
       return;
     } else if (message.content.startsWith(`${prefix}nick`)) {
       message.channel.send(message.member.displayName + ', Jono agrees that you are stupid');
       return;
     } else if (message.content.startsWith(`${prefix}url`)) {
       message.channel.send(message.author.displayAvatarURL("jpg"));
+      logger.info("Send './url' to Server: " + guildname + "(" + guildid + ")"+ ", Channel: " + channelname + "(" + channelid + ")")
       return;
-    } else if (message.content.startsWith(`${prefix}channel`)) {
-      message.channel.send(message.channel.id);
+    } else if (message.content.startsWith(`${prefix}serverinfo`)) {
+      message.channel.send("Server: " + guildname + "(" + guildid + "), Channel: <#" + channelid + ">(" + channelid + ")");
+      logger.info("Send './serverinfo' to Server: " + guildname + "(" + guildid + ")"+ ", Channel: " + channelname + "(" + channelid + ")")
       return;
     } else if (message.content.startsWith(`${prefix}fetch`)) {
       const channel = client.channels.cache.get(message.channel.id);
         channel.messages.fetch({ limit: 100 }).then(messages => {
-            console.log(`Received ${messages.size} messages`);
+            logger.info(`Received ${messages.size} messages`);
             // Get dates
             let date_ob = new Date();
             // Current date
@@ -146,12 +178,12 @@ client.on('message', async message => {
             messages.forEach(message => discordMessage.push(message.content))
             // Save array to file
             fs.writeFileSync(dir, JSON.stringify(discordMessage, null, 4));
-            console.log(`Saved messages to ${dir} `);
+            logger.info(`Saved messages to ${dir} `);
             // Send file to channel
             message.channel.send({
               files: [dir]
             });
-
+            logger.info("Send './fetch' to Server: " + guildname + "(" + guildid + ")"+ ", Channel: " + channelname + "(" + channelid + ")")
           });
       return;
     } else if (message.content.startsWith(`${prefix}sound1`)) {
@@ -209,8 +241,8 @@ client.on('message', async message => {
             dispatcher.on('error', console.error);
             return;}
     } else if (message.content.startsWith(`${prefix}leave`)) {
-      if(!message.guild.me.voice.channel) return message.channel.send("Not in voice channel"); //If the bot is not in a voice channel, then return a message
-      message.guild.me.voice.channel.leave(); //Leave the voice channel
+      if(!message.guild.me.voice.channel) return message.channel.send("Not in voice channel"); // If the bot is not in a voice channel, then return a message
+      message.guild.me.voice.channel.leave(); //Leave voice channel
       console.log('Left voice channel');
       return;
     } else if (message.content.startsWith(`${prefix}help`)) {
@@ -263,147 +295,10 @@ client.on('message', async message => {
     } else {
       message.channel.send("You Idiot, valid commands please!");
     };
-/*
-    if ( command === 'stupid') {
-        message.channel.send('You stupid.');
-    }
-
-    if ( command === 'jono') {
-        message.channel.send(message.author.username + ', Jono agrees that you are stupid');
-    }
-
-    if ( command === 'nick') {
-        message.channel.send(message.member.displayName + ', Jono agrees that you are stupid');
-    }
-
-    if ( command === 'url') {
-        message.channel.send(message.author.displayAvatarURL("jpg"));
-    }
-
-    if ( command === 'channel') {
-        message.channel.send(message.channel.id);
-    }
-
-    if ( command === 'fetch') {
-        const channel = client.channels.cache.get(message.channel.id);
-        channel.messages.fetch({ limit: 100 }).then(messages => {
-            console.log(`Received ${messages.size} messages`);
-            // Get dates
-            let date_ob = new Date();
-            // Current date
-            // Adjust 0 before single digit date
-            let date = ("0" + date_ob.getDate()).slice(-2);
-            // Current month
-            let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-            // Current year
-            let year = date_ob.getFullYear();
-            // Current hours
-            let hours = date_ob.getHours();
-            // Current minutes
-            let minutes = date_ob.getMinutes();
-            // Current seconds
-            let seconds = date_ob.getSeconds();
-            // Set path and unique file name
-            let dir = "./fetch/" + year + "-" + month + "-" + date + "_" + hours + ":" + minutes + ":" + seconds + ".json";
-            // Create empty array
-            let discordMessage = [];
-            // Add each message to array
-            messages.forEach(message => discordMessage.push(message.content))
-            // Save array to file
-            fs.writeFileSync(dir, JSON.stringify(discordMessage, null, 4));
-            console.log(`Saved messages to ${dir} `);
-            // Send file to channel
-            message.channel.send({
-              files: [dir]
-            });
-
-          });
-    }
-
-    if ( command === 'help') {
-        message.channel.send({embed: {
-            color: 15277667,
-            author: {
-              name: "Ding Ding",
-              icon_url: "https://cdn.discordapp.com/avatars/199872338609569792/d2ebe56ba66a5f95db256e48ed41c752.webp"
-            },
-            title: "Stupid Commands I Got So Far.",
-            url: "https://youtu.be/dQw4w9WgXcQ",
-            description: "Don't click it.",
-            fields: [{
-                name: "./help",
-                value: "This embed message"
-              },
-              {
-                name: "./stupid",
-                value: "Prints out `You Stupid.`"
-              },
-              {
-                name: "./jono",
-                value: "Prints out `username, Jono agrees that you are stupid`"
-              },
-              {
-                name: "./nick",
-                value: "Prints out `nickname, Jono agrees that you are stupid`"
-              },
-              {
-                name: "horse girl",
-                value: "Any message that contains `horse girl`, bot will react 🐴 👧"
-              },
-              {
-                name: "./url",
-                value: "Return your avatarURL"
-              },
-              {
-                name: "./fetch",
-                value: "Fetch 100 most recent messages from the channel and send as `.json`"
-              },
-            ],
-            timestamp: new Date(),
-            footer: {
-              icon_url: "https://cdn.discordapp.com/avatars/199872338609569792/d2ebe56ba66a5f95db256e48ed41c752.webp",
-              text: "Jobo the Bot"
-            }
-          }
-        });
-    }
-    */
 });
 
-//music
+// Music bot
 const queue = new Map();
-client.once("ready", () => {
-  console.log("Ready!");
-});
-
-client.once("reconnecting", () => {
-  console.log("Reconnecting!");
-});
-
-client.once("disconnect", () => {
-  console.log("Disconnect!");
-});
-/*
-client.on("message", async message => {
-  if (message.author.bot) return;
-  if (!message.content.startsWith(prefix)) return;
-
-  const serverQueue = queue.get(message.guild.id);
-
-  if (message.content.startsWith(`${prefix}play`)) {
-    execute(message, serverQueue);
-    return;
-  } else if (message.content.startsWith(`${prefix}skip`)) {
-    skip(message, serverQueue);
-    return;
-  } else if (message.content.startsWith(`${prefix}stop`)) {
-    stop(message, serverQueue);
-    return;
-  } else {
-    message.channel.send("You Idiot, valid commands please!");
-  }
-});
-*/
 
 async function execute(message, serverQueue) {
   const args = message.content.split(" ");
@@ -509,7 +404,7 @@ client.on('message', function(message) {
 
 //Set Status
 client.once('ready', () => {
-    console.log(`${client.user.username} is up and running!`);
+    console.log(`${client.user.username} is up and running.`);
 
     client.user.setPresence({
         status: 'available',
@@ -518,4 +413,12 @@ client.once('ready', () => {
             type: 'PLAYING',
         }
     });
+});
+
+client.once("reconnecting", () => {
+  console.log(`${client.user.username} is reconnecting.`);
+});
+
+client.once("disconnect", () => {
+  console.log(`${client.user.username} is disconnected.`);
 });

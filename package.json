@@ -16,6 +16,8 @@
     "node-fetch": "^2.6.1",
     "opusscript": "0.0.8",
     "twit": "^2.2.11",
+    "winston": "^3.3.3",
+    "winston-daily-rotate-file": "^4.5.5",
     "wordcloud": "^1.2.1",
     "ytdl-core": "^4.7.0"
   }
