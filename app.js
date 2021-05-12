@@ -105,14 +105,11 @@ client.on('message', async message => {
     if (message.author.bot) return;
     // Looks for message starting with prefix
     if (!message.content.startsWith(prefix)) return;
-    /*
-    // Remove prefix
-    const commandBody = message.content.slice(prefix.length);
-    // Split into arrays of strings when there is space
-    const args = commandBody.split(' ');
+    // Remove prefix and get arguments
+    const args = message.content.slice(prefix.length).trim().split(' ');
     // Make it lower case and assign to 'command'
     const command = args.shift().toLowerCase();
-    */
+
    // Music Que constant
     const serverQueue = queue.get(message.guild.id);
     let guildname = message.guild.name
@@ -186,11 +183,66 @@ client.on('message', async message => {
             logger.info("Send './fetch' to Server: " + guildname + "(" + guildid + ")"+ ", Channel: " + channelname + "(" + channelid + ")")
           });
       return;
-    } else if (message.content.startsWith(`${prefix}sound1`)) {
+    } else if (message.content.startsWith(`${prefix}sound`)) {
+      if (!args.length) {
+        return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
+      } else if (args[0] === 'list') {
+        const soundFolder = './mp3/';
+        let fileList = [];
+        fs.readdir(soundFolder, (err, files) => {
+          files.forEach(file => {
+            fileList.push(file);
+            console.log(file);
+          });
+          var string = fileList.join('\n');
+        message.channel.send("```" + "File List: \n" + string + "```");
+        });
+      } else {
+        const soundFolder = './mp3/';
+        let fileList = [];
+        fs.readdir(soundFolder, (err, files) => {
+          files.forEach(file => {
+            fileList.push(file);
+            console.log(file);
+          });
+          var string = fileList.join('\n');
+        var soundFile = args[0] +'.mp3' // example input value
+        if(string.indexOf(soundFile) !== -1) {
+          async function playMusic() {
+            if (message.member.voice.channel) {
+              const connection = await message.member.voice.channel.join();
+              // Play audio, see below
+              const dispatcher = connection.play('mp3/'+soundFile);
+      
+              dispatcher.on('start', () => {
+                console.log('jono.mp3 is now playing!');
+              });
+      
+              dispatcher.on('finish', () => {
+                  console.log('jono.mp3 has finished playing!');
+                  message.guild.me.voice.channel.leave();
+              });
+      
+              // Always remember to handle errors 
+              dispatcher.on('error', console.error);
+              return;
+            } else {
+              message.channel.send("Not in Voice")
+            }
+          }
+          playMusic();
+        } else {
+          message.channel.send("no")
+        }
+          return;
+        });
+      };
+      
+    } else if (message.content.startsWith(`${prefix}wewe`)) {
       if (message.member.voice.channel) {
         const connection = await message.member.voice.channel.join();
         // Play audio, see below
-        const dispatcher = connection.play('mp3/jono.mp3');
+        const dispatcher = connection.play('mp3/wono.mp3');
 
         dispatcher.on('start', () => {
           console.log('jono.mp3 is now playing!');
@@ -391,7 +443,6 @@ function play(guild, song) {
   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
   serverQueue.textChannel.send(`Now playing **${song.title}**`);
 };
-
 
 // React to phrase
 client.on('message', function(message) {
