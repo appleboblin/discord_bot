@@ -284,6 +284,22 @@ client.on('message', async message => {
             name: "./fetch",
             value: "Fetch 100 most recent messages from the channel and send as `.json`"
           },
+          {
+            name: "./play `YouTube URL`",
+            value: "Play youtube audio"
+          },
+          {
+            name: "./skip",
+            value: "Skip queue"
+          },
+          {
+            name: "./stop",
+            value: "Stop audio"
+          },
+          {
+            name: "./sound `arguments`",
+            value: "`./sound list` for audio list. `./sound filename` to play audio, don't need `.mp3`"
+          },
         ],
         timestamp: new Date(),
         footer: {
