@@ -286,7 +286,7 @@ client.on('message', async message => {
           },
           {
             name: "./play `YouTube URL`",
-            value: "Play youtube audio"
+            value: "Play YouTube audio"
           },
           {
             name: "./skip",
