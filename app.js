@@ -119,15 +119,12 @@ client.on('message', async message => {
     // Commands
     if (message.content.startsWith(`${prefix}play`)) {
       execute(message, serverQueue);
-      logger.info("Music added to quequ");
       return;
     } else if (message.content.startsWith(`${prefix}skip`)) {
       skip(message, serverQueue);
-      logger.info("Skipped track");
       return;
     } else if (message.content.startsWith(`${prefix}stop`)) {
       stop(message, serverQueue);
-      logger.info("Music stopped");
       return;
     } else if (message.content.startsWith(`${prefix}stupid`)) {
       message.channel.send('You stupid.');
@@ -184,118 +181,70 @@ client.on('message', async message => {
           });
       return;
     } else if (message.content.startsWith(`${prefix}sound`)) {
-      if (!args.length) {
+      if (!args.length) { // Check if there are any arguments
         return message.channel.send(`You didn't provide any arguments, ${message.author}!`);
       } else if (args[0] === 'list') {
-        const soundFolder = './mp3/';
-        let fileList = [];
-        fs.readdir(soundFolder, (err, files) => {
-          files.forEach(file => {
-            fileList.push(file);
-            console.log(file);
+        const soundFolder = './mp3/'; // folder path
+        let fileList = []; // empty array
+        fs.readdir(soundFolder, (err, files) => { //read directory
+          files.forEach(file => { // repeat for each file
+            fileList.push(file); // send to array
+            logger.info("Found " + file) 
           });
-          var string = fileList.join('\n');
+          var string = fileList.join('\n'); // manipulate structure
         message.channel.send("```" + "File List: \n" + string + "```");
+        logger.info("Send './sound list' to Server: " + guildname + "(" + guildid + ")"+ ", Channel: " + channelname + "(" + channelid + ")")
         });
       } else {
-        const soundFolder = './mp3/';
-        let fileList = [];
-        fs.readdir(soundFolder, (err, files) => {
-          files.forEach(file => {
-            fileList.push(file);
-            console.log(file);
+        const soundFolder = './mp3/'; // folder path
+        let fileList = []; // empty array
+        fs.readdir(soundFolder, (err, files) => { //read directory
+          files.forEach(file => { // repeat for each file
+            fileList.push(file); // send to array
+            logger.info("Found " + file)
           });
-          var string = fileList.join('\n');
-        var soundFile = args[0] +'.mp3' // example input value
+          var string = fileList.join('\n'); // manipulate structure
+        var soundFile = args[0] +'.mp3' // audio file
         if(string.indexOf(soundFile) !== -1) {
-          async function playMusic() {
-            if (message.member.voice.channel) {
-              const connection = await message.member.voice.channel.join();
-              // Play audio, see below
-              const dispatcher = connection.play('mp3/'+soundFile);
+          async function playMusic() { // Set async function
+            if (message.member.voice.channel) { // Check if anyone is in voice channel
+              const connection = await message.member.voice.channel.join(); // wait until bot connect to voice channel
+              // Play audio
+              const dispatcher = connection.play('mp3/'+soundFile); // get file to play
       
               dispatcher.on('start', () => {
-                console.log('jono.mp3 is now playing!');
+                logger.info(soundFile + ' is now playing!');
               });
       
               dispatcher.on('finish', () => {
-                  console.log('jono.mp3 has finished playing!');
+                  logger.info(soundFile + ' has finished playing!');
                   message.guild.me.voice.channel.leave();
+                  logger.info("Done playing, bot left voice channel.")
               });
       
-              // Always remember to handle errors 
+              // handle errors 
               dispatcher.on('error', console.error);
               return;
             } else {
-              message.channel.send("Not in Voice")
+              message.channel.send("No one is in voice chat.")
+              logger.info("No one is in voice chat to play. ")
             }
           }
-          playMusic();
+          playMusic(); // Call async function
         } else {
-          message.channel.send("no")
+          message.channel.send("No matching file name. Type `./sound list` for avaliable files.")
+          logger.info("Invalid argument")
         }
           return;
         });
       };
-      
-    } else if (message.content.startsWith(`${prefix}wewe`)) {
-      if (message.member.voice.channel) {
-        const connection = await message.member.voice.channel.join();
-        // Play audio, see below
-        const dispatcher = connection.play('mp3/wono.mp3');
-
-        dispatcher.on('start', () => {
-          console.log('jono.mp3 is now playing!');
-        });
-
-        dispatcher.on('finish', () => {
-            console.log('jono.mp3 has finished playing!');
-            message.guild.me.voice.channel.leave();
-        });
-
-        // Always remember to handle errors 
-        dispatcher.on('error', console.error);
-        return;}
-    } else if (message.content.startsWith(`${prefix}sound2`)) {
-      if (message.member.voice.channel) {
-          const connection = await message.member.voice.channel.join();
-          // Play audio, see below
-          const dispatcher = connection.play('mp3/MP5_SMG-GunGuru-703432894.mp3');
-  
-          dispatcher.on('start', () => {
-            console.log('MP5_SMG-GunGuru-703432894.mp3 is now playing!');
-          });
-  
-          dispatcher.on('finish', () => {
-              console.log('MP5_SMG-GunGuru-703432894.mp3 has finished playing!');
-              message.guild.me.voice.channel.leave();
-          });
-  
-          // Always remember to handle errors 
-          dispatcher.on('error', console.error);
-          return;}
-        } else if (message.content.startsWith(`${prefix}liu`)) {
-          if (message.member.voice.channel) {
-            const connection = await message.member.voice.channel.join();
-            // Play audio, see below
-            const dispatcher = connection.play('mp3/liu.mp3');
-    
-            dispatcher.on('start', () => {
-              console.log('liu.mp3 is now playing!');
-            });
-    
-            dispatcher.on('finish', () => {
-                console.log('liu.mp3 has finished playing!');
-                message.guild.me.voice.channel.leave();
-            });
-    
-            // Always remember to handle errors 
-            dispatcher.on('error', console.error);
-            return;}
     } else if (message.content.startsWith(`${prefix}leave`)) {
-      if(!message.guild.me.voice.channel) return message.channel.send("Not in voice channel"); // If the bot is not in a voice channel, then return a message
+      if(!message.guild.me.voice.channel) {
+        logger.info("Bot not in voice channel")
+        return message.channel.send("Not in voice channel"); // If the bot is not in a voice channel, then return a message
+      }
       message.guild.me.voice.channel.leave(); //Leave voice channel
-      console.log('Left voice channel');
+      logger.info("Booted bot from voice channel.")
       return;
     } else if (message.content.startsWith(`${prefix}help`)) {
       message.channel.send({embed: {
@@ -343,9 +292,11 @@ client.on('message', async message => {
         }
       }
     });
+    logger.info("Send './help' to Server: " + guildname + "(" + guildid + ")"+ ", Channel: " + channelname + "(" + channelid + ")")
       return;
     } else {
       message.channel.send("You Idiot, valid commands please!");
+      logger.info("Invalid command")
     };
 });
 
@@ -356,23 +307,25 @@ async function execute(message, serverQueue) {
   const args = message.content.split(" ");
 
   const voiceChannel = message.member.voice.channel;
-  if (!voiceChannel)
+  if (!voiceChannel){
+    logger.info("No one is in voice channel")
     return message.channel.send(
       "Open my voice box!"
-    );
+    )};
   const permissions = voiceChannel.permissionsFor(message.client.user);
   if (!permissions.has("CONNECT") || !permissions.has("SPEAK")) {
+    logger.info("No permission to join voice channel")
     return message.channel.send(
       "Hey Jono, I can't do that."
     );
   }
-
+//get dong info
   const songInfo = await ytdl.getInfo(args[1]);
   const song = {
         title: songInfo.videoDetails.title,
         url: songInfo.videoDetails.video_url,
    };
-
+// bot audiosettings
   if (!serverQueue) {
     const queueContruct = {
       textChannel: message.channel,
@@ -391,38 +344,45 @@ async function execute(message, serverQueue) {
       var connection = await voiceChannel.join();
       queueContruct.connection = connection;
       play(message.guild, queueContruct.songs[0]);
-    } catch (err) {
-      console.log(err);
+    } catch (err) { //log error
+      logger.info(err);
       queue.delete(message.guild.id);
       return message.channel.send(err);
     }
-  } else {
+  } else { //play song
     serverQueue.songs.push(song);
+    logger.info("Music added to quequ");
     return message.channel.send(`${song.title} added`);
   }
 }
 
 function skip(message, serverQueue) {
-  if (!message.member.voice.channel)
+  if (!message.member.voice.channel){
+    logger.info("User needs to be in a voice channel to skip")
     return message.channel.send(
-      "Join voice to shitdown voice box."
-    );
-  if (!serverQueue)
-    return message.channel.send("Empty stomach.");
+      "Join voice to shutdown voice box."
+    )};
+  if (!serverQueue){
+    logger.info("No song to skip")
+    return message.channel.send("Empty stomach.")};
   serverQueue.connection.dispatcher.end();
+  logger.info("Audio Skipped")
 }
 
 function stop(message, serverQueue) {
-  if (!message.member.voice.channel)
+  if (!message.member.voice.channel){
+    logger.info("User needs to be in a voice channel to skip")
     return message.channel.send(
       "Join to stop!"
-    );
+    )};
     
-  if (!serverQueue)
-    return message.channel.send("No content!");
+  if (!serverQueue){
+    logger.info("No song to skip")
+    return message.channel.send("No content!")};
     
   serverQueue.songs = [];
   serverQueue.connection.dispatcher.end();
+  logger.info("Stopped playing")
 }
 
 function play(guild, song) {
@@ -437,10 +397,12 @@ function play(guild, song) {
     .play(ytdl(song.url))
     .on("finish", () => {
       serverQueue.songs.shift();
+      logger.info("Audio ended")
       play(guild, serverQueue.songs[0]);
     })
-    .on("error", error => console.error(error));
+    .on("error", error => logger.info(error));
   dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
+  logger.info('Playing requested audio')
   serverQueue.textChannel.send(`Now playing **${song.title}**`);
 };
 
@@ -450,26 +412,27 @@ client.on('message', function(message) {
     if (message.content.includes('horse girl')) {
         message.react('🐴');
         message.react('👧');
+        logger.info("Reacted to horse girl")
     };
 });       
 
 //Set Status
 client.once('ready', () => {
-    console.log(`${client.user.username} is up and running.`);
+    logger.info(`${client.user.username} is up and running.`);
 
     client.user.setPresence({
         status: 'available',
         activity: {
-            name: 'Fake Jono 1.0',
+            name: 'Fake Jono 1.3',
             type: 'PLAYING',
         }
     });
 });
 
 client.once("reconnecting", () => {
-  console.log(`${client.user.username} is reconnecting.`);
+  logger.info(`${client.user.username} is reconnecting.`);
 });
 
 client.once("disconnect", () => {
-  console.log(`${client.user.username} is disconnected.`);
+  logger.info(`${client.user.username} is disconnected.`);
 });
