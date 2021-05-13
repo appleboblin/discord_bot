@@ -1,7 +1,5 @@
 // Requirements
 const Discord = require('discord.js');
-const ytdl = require('ytdl-core');
-const fs = require('fs');
 // Set Discord client
 const client = new Discord.Client();
 // require custom files
