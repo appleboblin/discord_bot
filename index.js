@@ -4,6 +4,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 // require custom files
 const config = require('./config.json');
+const token = require('./token.json');
 const command = require('./function/command');
 const welcomeMessage = require('./function/welcome-message');
 const privateMessage = require('./function/private-message');
@@ -67,4 +68,4 @@ client.on('ready', () => {
 });
 
 // Login Discord
-client.login(config.token);
+client.login(token.discord_token);
