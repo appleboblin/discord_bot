@@ -1,3 +1,6 @@
+// call logger
+const logger = require('./logger');
+
 module.exports = (client, triggerText, replyText) => {
   client.on('message', (message) => {
     if (
@@ -7,6 +10,13 @@ module.exports = (client, triggerText, replyText) => {
     ) {
       //send text
       message.author.send(replyText);
+      logger.info(
+        `Sent Private Message to ` +
+          message.author.username +
+          '(' +
+          message.author.id +
+          ')'
+      );
     }
   });
 };

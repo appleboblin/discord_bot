@@ -1,3 +1,6 @@
+// call logger
+const logger = require('./logger');
+
 const addReactions = (message, reactions) => {
   //remove 0 index
   message.react(reactions[0]);
@@ -26,6 +29,7 @@ module.exports = async (client, id, text, reactions = []) => {
         message[1].edit(text);
         // Change rections
         addReactions(message[1], reactions);
+        logger.info('Set welcome message and reactions');
       }
     }
   });

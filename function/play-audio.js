@@ -1,5 +1,9 @@
+// call logger
+const logger = require('./logger');
+
 // Destructure prefix
 const { prefix } = require('../config.json');
+// requirements
 const fs = require('fs');
 // Handle command messages
 module.exports = (client, aliases, callback) => {
@@ -17,7 +21,7 @@ module.exports = (client, aliases, callback) => {
       const command = `${prefix}${alias}`;
       // if theres a command, log it and callback
       if (content.startsWith(`${command} `) || content === command) {
-        console.log(`Running the command ${command}`);
+        logger.info(`Running the command ${command}`);
         // Music Stuff
         const fileName = message.content.replace('.audio ', '');
         let guildname = message.guild.name;
@@ -28,7 +32,7 @@ module.exports = (client, aliases, callback) => {
         if (fileName.length === 0) {
           // Check if there are any arguments
           return message.channel.send(
-            `You didn't provide any arguments, ${message.author}!`
+            `You didn't provide any arguments, ` + message.member.displayName
           );
         } else if (fileName === 'list') {
           const soundFolder = './mp3/'; // folder path
@@ -41,8 +45,10 @@ module.exports = (client, aliases, callback) => {
             });
             var string = fileList.join('\n'); // manipulate structure
             message.channel.send('```' + 'File List: \n' + string + '```');
-            console.log(
-              "Send './sound list' to Server: " +
+            logger.info(
+              "Send '" +
+                message.content +
+                "' to Server: " +
                 guildname +
                 '(' +
                 guildid +
@@ -62,7 +68,7 @@ module.exports = (client, aliases, callback) => {
             files.forEach((file) => {
               // repeat for each file
               fileList.push(file); // send to array
-              console.log('Found ' + file);
+              logger.info('Found ' + file);
             });
             var string = fileList.join('\n'); // manipulate structure
             var soundFile = fileName + '.mp3'; // audio file
@@ -76,13 +82,13 @@ module.exports = (client, aliases, callback) => {
                   const dispatcher = connection.play('mp3/' + soundFile); // get file to play
 
                   dispatcher.on('start', () => {
-                    console.log(soundFile + ' is now playing!');
+                    logger.info(soundFile + ' is now playing!');
                   });
 
                   dispatcher.on('finish', () => {
-                    console.log(soundFile + ' has finished playing!');
+                    logger.info(soundFile + ' has finished playing!');
                     message.guild.me.voice.channel.leave();
-                    console.log('Done playing, bot left voice channel.');
+                    logger.info('Done playing, bot left voice channel.');
                   });
 
                   // handle errors
@@ -90,7 +96,7 @@ module.exports = (client, aliases, callback) => {
                   return;
                 } else {
                   message.channel.send('No one is in voice chat.');
-                  console.log('No one is in voice chat to play. ');
+                  logger.info('No one is in voice chat to play. ');
                 }
               }
               playMusic(); // Call async function
@@ -98,7 +104,7 @@ module.exports = (client, aliases, callback) => {
               message.channel.send(
                 'No matching file name. Type `./sound list` for avaliable files.'
               );
-              console.log('Invalid argument');
+              logger.info('Invalid argument');
             }
             return;
           });

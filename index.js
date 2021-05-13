@@ -11,6 +11,7 @@ const command = require('./function/command');
 const welcomeMessage = require('./function/welcome-message');
 const privateMessage = require('./function/private-message');
 const playMedia = require('./function/play-audio');
+const logger = require('./function/logger');
 
 // Active when Discord client is ready
 client.on('ready', () => {
@@ -19,6 +20,7 @@ client.on('ready', () => {
   // test message
   command(client, ['no', 'test'], (message) => {
     message.channel.send('hi');
+    logger.info('test');
   });
   // Get info of servers the bot is in
   command(client, 'server', (message) => {
