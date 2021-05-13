@@ -1,5 +1,7 @@
 // Requirements
 const Discord = require('discord.js');
+const ytdl = require('ytdl-core');
+const fs = require('fs');
 // Set Discord client
 const client = new Discord.Client();
 // require custom files
@@ -8,9 +10,11 @@ const token = require('./token.json');
 const command = require('./function/command');
 const welcomeMessage = require('./function/welcome-message');
 const privateMessage = require('./function/private-message');
+const playMedia = require('./function/play-audio');
 
 // Active when Discord client is ready
 client.on('ready', () => {
+  // ready message
   console.log('client ready');
   // test message
   command(client, ['no', 'test'], (message) => {
@@ -31,7 +35,7 @@ client.on('ready', () => {
   });
   // Set new Status
   command(client, 'status', (message) => {
-    const content = message.content.replace('./status ', '');
+    const content = message.content.replace('.status ', '');
 
     client.user.setPresence({
       status: 'available',
@@ -65,6 +69,13 @@ client.on('ready', () => {
       type: 'PLAYING',
     },
   });
+
+  command(client, 'bot', (message) => {
+    const content = message.content.replace('.bot ', '');
+    message.channel.send(content);
+  });
+
+  playMedia(client, 'audio', (message) => {});
 });
 
 // Login Discord

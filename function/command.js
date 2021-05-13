@@ -8,6 +8,8 @@ module.exports = (client, aliases, callback) => {
   }
 
   client.on('message', (message) => {
+    // Ignore if bot says it
+    if (message.author.bot) return;
     //get content of message
     const { content } = message;
     // Look for messages that have prefix and command
