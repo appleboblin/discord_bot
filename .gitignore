@@ -105,3 +105,5 @@ dist
 
 # Messages output files
 /fetch
+# config.json
+config.json
