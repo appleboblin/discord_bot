@@ -105,3 +105,6 @@ dist
 
 # Messages output files
 /fetch
+
+# ignore token
+token.json
