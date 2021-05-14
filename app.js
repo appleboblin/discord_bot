@@ -456,7 +456,7 @@ async function execute(message, serverQueue) {
     logger.info('No permission to join voice channel');
     return message.channel.send("Hey Jono, I can't do that.");
   }
-  //get dong info
+  //get song info
   const songInfo = await ytdl.getInfo(args[1]);
   const song = {
     title: songInfo.videoDetails.title,
