@@ -18,7 +18,7 @@ module.exports = async (client, id, text, reactions = []) => {
   channel.messages.fetch().then((messages) => {
     // Check if theres already a message
     if (messages.size === 0) {
-      // Sned new message
+      // Send new message
       channel.send(text).then((message) => {
         addReactions(message, reactions);
       });
@@ -27,7 +27,7 @@ module.exports = async (client, id, text, reactions = []) => {
       for (const message of messages) {
         // Change text
         message[1].edit(text);
-        // Change rections
+        // Change reactions
         addReactions(message[1], reactions);
         logger.info('Set welcome message and reactions');
       }
