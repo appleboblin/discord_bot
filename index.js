@@ -10,7 +10,10 @@ const welcomeMessage = require('./function/welcome-message');
 const privateMessage = require('./function/private-message');
 const playMedia = require('./function/play-audio');
 const logger = require('./function/logger');
+const helpCommand = require('./function/help-command');
 
+// Get prefix from config
+const { prefix } = config;
 // Active when Discord client is ready
 client.on('ready', () => {
   // ready message
@@ -35,7 +38,7 @@ client.on('ready', () => {
   });
   // Set new Status
   command(client, 'status', (message) => {
-    const content = message.content.replace('.status ', '');
+    const content = message.content.replace(`${prefix}status`, '');
 
     client.user.setPresence({
       status: 'available',
@@ -69,13 +72,11 @@ client.on('ready', () => {
       type: 'PLAYING',
     },
   });
+  // help
+  helpCommand(client, 'help', (message) => {});
 
-  command(client, 'bot', (message) => {
-    const content = message.content.replace('.bot ', '');
-    message.channel.send(content);
-  });
-
-  playMedia(client, 'audio', (message) => {});
+  // Play Media
+  playMedia(client, 'sound', (message) => {});
 });
 
 // Login Discord
