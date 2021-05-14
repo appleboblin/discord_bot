@@ -6,11 +6,11 @@ module.exports = (client, triggerText) => {
     if (
       //check where it receive the message from
       message.channel.type === 'text' &&
-      message.content.toLowerCase() === triggerText.toLowerCase()
+      message.content.includes(triggerText)
     ) {
       // action
-      message.react('🐴');
-      message.react('👧');
+      message.react('🔫');
+      message.react('💣');
       logger.info('Reacted to ' + triggerText);
     }
   });
