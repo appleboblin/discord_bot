@@ -107,3 +107,5 @@ dist
 /fetch
 # ignore tokens
 token.json
+#IDE
+.idea
