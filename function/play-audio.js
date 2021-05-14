@@ -23,7 +23,7 @@ module.exports = (client, aliases, callback) => {
       if (content.startsWith(`${command} `) || content === command) {
         logger.info(`Running the command ${command}`);
         // Music Stuff
-        const fileName = message.content.replace('.audio ', '');
+        const fileName = message.content.replace(`${command} `, '');
         let guildname = message.guild.name;
         let guildid = message.guild.id;
         let channelname = message.channel.name;

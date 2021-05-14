@@ -20,7 +20,7 @@ client.on('ready', () => {
   console.log('client ready');
   // test message
   command(client, ['no', 'test'], (message) => {
-    message.channel.send('hi');
+    message.channel.send('.test');
     logger.info('test');
   });
   // Get info of servers the bot is in
@@ -68,7 +68,7 @@ client.on('ready', () => {
   client.user.setPresence({
     status: 'available',
     activity: {
-      name: 'Default',
+      name: `${prefix}help for more information`,
       type: 'PLAYING',
     },
   });
@@ -77,6 +77,17 @@ client.on('ready', () => {
 
   // Play Media
   playMedia(client, 'sound', (message) => {});
+
+  // Kick bot from voice
+  command(client, 'leave', (message) => {
+    if (!message.guild.me.voice.channel) {
+      logger.info('Bot not in voice channel');
+      return message.channel.send('Not in voice channel'); // If the bot is not in a voice channel, then return a message
+    }
+    message.guild.me.voice.channel.leave(); //Leave voice channel
+    logger.info('Booted bot from voice channel.');
+    return;
+  });
 });
 
 // Login Discord

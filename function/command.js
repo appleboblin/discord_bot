@@ -20,7 +20,7 @@ module.exports = (client, aliases, callback) => {
       const command = `${prefix}${alias}`;
       // if theres a command, log it and callback
       if (content.startsWith(`${command} `) || content === command) {
-        logger.info(`Running the command ${command}`);
+        logger.info(`Running ${command}`);
         // pass message so callback have access to channel, content, anything it needs
         callback(message);
       }
