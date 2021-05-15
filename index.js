@@ -12,9 +12,10 @@ const playMedia = require('./function/play-audio');
 const logger = require('./function/logger');
 const helpCommand = require('./function/help-command');
 const reactPhrase = require('./function/react-phrase');
+const fetchRecent = require('./function/fetch-recent');
 
 // increase the limit
-require('events').EventEmitter.defaultMaxListeners = 15;
+require('events').EventEmitter.defaultMaxListeners = 10;
 
 // Get prefix from config
 const { prefix } = config;
@@ -69,6 +70,7 @@ client.on('ready', () => {
       },
     });
   });
+
   //Private Message
   privateMessage(client, 'Ding', 'dong');
 
@@ -79,7 +81,7 @@ client.on('ready', () => {
   welcomeMessage(
     client,
     '842397223735525407',
-    'Biggie poopie Jojo\nThis is a message board\nWhat am i doing.... :exploding_head:\nHello Jonai\nNeed to work on message reactions next.',
+    'Biggie poopie Jojo\nThis is a message board\nWhat am i doing.... :exploding_head:\nHello Jonai\nNeed to work on message reactions next.\nThis is another new line',
     [
       // emoji reactions
       '😇',
@@ -95,6 +97,9 @@ client.on('ready', () => {
 
   // Play Media
   playMedia(client, 'sound', (message) => {});
+
+  // Fetch recent message
+  fetchRecent(client, 'fetch', (message) => {});
 
   // Kick bot from voice
   command(client, 'leave', (message) => {
