@@ -233,6 +233,7 @@ function roleClaim(client) {
   }
   // Using welcomeMessage function
   welcomeMessage(client, channelId, emojiText, reactions);
+  logger.info('Set reaction roles');
   // Handel reactions to add roles
   const handleReaction = (reaction, user, add) => {
     // Not adding role to itself
@@ -254,8 +255,10 @@ function roleClaim(client) {
 
     if (add) {
       member.roles.add(role);
+      logger.info(`Added ${roleName} role to ${user.username}(${user.id})`);
     } else {
       member.roles.remove(role);
+      logger.info(`Removed ${roleName} role to ${user.username}(${user.id})`);
     }
   };
 
