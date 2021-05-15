@@ -13,6 +13,9 @@ const logger = require('./function/logger');
 const helpCommand = require('./function/help-command');
 const reactPhrase = require('./function/react-phrase');
 
+// increase the limit
+require('events').EventEmitter.defaultMaxListeners = 15;
+
 // Get prefix from config
 const { prefix } = config;
 // Active when Discord client is ready
@@ -27,12 +30,14 @@ client.on('ready', () => {
     message.channel.send('.test');
     logger.info('test');
   });
+
   // Get info of servers the bot is in
   command(client, 'server', (message) => {
     client.guilds.cache.forEach((guild) => {
       message.channel.send(`${guild.name} have ${guild.memberCount} members`);
     });
   });
+
   // Clear recent messages of a channel
   command(client, ['cc', 'clearchannel'], (message) => {
     // Check if user have permission
@@ -100,6 +105,45 @@ client.on('ready', () => {
     message.guild.me.voice.channel.leave(); //Leave voice channel
     logger.info('Booted bot from voice channel.');
     return;
+  });
+
+  // stupid
+  command(client, 'stupid', (message) => {
+    message.channel.send('You stupid.');
+  });
+
+  // jono
+  command(client, 'jono', (message) => {
+    message.channel.send(
+      message.author.username + ', Jono agrees that you are stupid'
+    );
+  });
+
+  // nick
+  command(client, 'nick', (message) => {
+    message.channel.send(
+      message.member.displayName + ', Jono agrees that you are stupid'
+    );
+  });
+
+  // url
+  command(client, 'url', (message) => {
+    message.channel.send(message.author.displayAvatarURL('jpg'));
+  });
+
+  // server info
+  command(client, 'serverinfo', (message) => {
+    message.channel.send(
+      'Server: ' +
+        message.guild.name +
+        '(' +
+        message.guild.id +
+        '), Channel: <#' +
+        message.channel.id +
+        '>(' +
+        message.channel.id +
+        ')'
+    );
   });
 });
 

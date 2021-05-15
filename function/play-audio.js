@@ -24,10 +24,10 @@ module.exports = (client, aliases, callback) => {
         logger.info(`Running the command ${command}`);
         // Music Stuff
         const fileName = message.content.replace(`${command} `, '');
-        let guildname = message.guild.name;
-        let guildid = message.guild.id;
-        let channelname = message.channel.name;
-        let channelid = message.channel.id;
+        let guildName = message.guild.name;
+        let guildId = message.guild.id;
+        let channelName = message.channel.name;
+        let channelId = message.channel.id;
 
         if (fileName.length === 0) {
           // Check if there are any arguments
@@ -49,19 +49,19 @@ module.exports = (client, aliases, callback) => {
               "Send '" +
                 message.content +
                 "' to Server: " +
-                guildname +
+                guildName +
                 '(' +
-                guildid +
+                guildId +
                 ')' +
                 ', Channel: ' +
-                channelname +
+                channelName +
                 '(' +
-                channelid +
+                channelId +
                 ')'
             );
           });
         } else {
-          const soundFolder = './mp3/'; // folder path
+          const soundFolder = './audio/'; // folder path
           let fileList = []; // empty array
           fs.readdir(soundFolder, (err, files) => {
             //read directory
@@ -71,7 +71,7 @@ module.exports = (client, aliases, callback) => {
               logger.info('Found ' + file);
             });
             var string = fileList.join('\n'); // manipulate structure
-            var soundFile = fileName + '.mp3'; // audio file
+            var soundFile = fileName; //+ '.mp3'; // audio file
             if (string.indexOf(soundFile) !== -1) {
               async function playMusic() {
                 // Set async function
@@ -79,7 +79,7 @@ module.exports = (client, aliases, callback) => {
                   // Check if anyone is in voice channel
                   const connection = await message.member.voice.channel.join(); // wait until bot connect to voice channel
                   // Play audio
-                  const dispatcher = connection.play('mp3/' + soundFile); // get file to play
+                  const dispatcher = connection.play('audio/' + soundFile); // get file to play
 
                   dispatcher.on('start', () => {
                     logger.info(soundFile + ' is now playing!');
@@ -102,7 +102,9 @@ module.exports = (client, aliases, callback) => {
               playMusic(); // Call async function
             } else {
               message.channel.send(
-                'No matching file name. Type `./sound list` for avaliable files.'
+                `No matching file name. Type \`${prefix}` +
+                  aliases +
+                  ` list\` for available files.`
               );
               logger.info('Invalid argument');
             }

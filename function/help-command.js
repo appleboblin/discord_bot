@@ -22,10 +22,10 @@ module.exports = (client, aliases, callback) => {
       if (content.startsWith(`${command} `) || content === command) {
         logger.info(`Running the command ${command}`);
         // pass message so callback have access to channel, content, anything it needs
-        let guildname = message.guild.name;
-        let guildid = message.guild.id;
-        let channelname = message.channel.name;
-        let channelid = message.channel.id;
+        let guildName = message.guild.name;
+        let guildId = message.guild.id;
+        let channelName = message.channel.name;
+        let channelId = message.channel.id;
         message.channel.send({
           embed: {
             color: 15277667,
@@ -82,7 +82,7 @@ module.exports = (client, aliases, callback) => {
               },
               {
                 name: `${prefix}sound \`arguments\``,
-                value: `\`${prefix}sound list\` for audio list. \`${prefix}sound filename\` to play audio, don't need \`.mp3\``,
+                value: `\`${prefix}sound list\` for audio list. \`${prefix}sound filename\` to play audio, include file extension.`,
               },
             ],
             timestamp: new Date(),
@@ -95,14 +95,14 @@ module.exports = (client, aliases, callback) => {
         });
         logger.info(
           `Send '${prefix}help' to Server: ` +
-            guildname +
+            guildName +
             '(' +
-            guildid +
+            guildId +
             ')' +
             ', Channel: ' +
-            channelname +
+            channelName +
             '(' +
-            channelid +
+            channelId +
             ')'
         );
         return;
