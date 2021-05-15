@@ -11,6 +11,8 @@ const {
   privateMessage,
   helpCommand,
   reactPhrase,
+  roleClaim,
+  emojiList,
 } = require('./function/generalCommands');
 const { playMedia, playMusic } = require('./function/mediaPlayer');
 const logger = require('./function/logger');
@@ -30,7 +32,7 @@ client.on('ready', () => {
   // Commands
   // test message
   command(client, ['no', 'test'], (message) => {
-    message.channel.send('.test');
+    message.channel.send(`\:BOOBA:`);
     logger.info('test');
   });
 
@@ -77,12 +79,12 @@ client.on('ready', () => {
   privateMessage(client, 'Ding', 'dong');
 
   // React to phrase
-  reactPhrase(client, 'horse girl');
+  reactPhrase(client, 'pew pew');
 
   // Welcome message
   welcomeMessage(
     client,
-    '842397223735525407',
+    '842369951826575360',
     'Biggie poopie Jojo\nThis is a message board\nWhat am i doing.... :exploding_head:\nHello Jonai\nNeed to work on message reactions next.\nThis is another new line',
     [
       // emoji reactions
@@ -105,17 +107,6 @@ client.on('ready', () => {
 
   // Play Music
   playMusic(client, ['play', 'stop', 'skip'], (message) => {});
-
-  //leave 2
-  command(client, 'leave2', (message) => {
-    if (!message.guild.me.voice.channel) {
-      logger.info('Bot not in voice channel');
-      return message.channel.send('Not in voice channel'); // If the bot is not in a voice channel, then return a message
-    }
-    message.guild.me.voice.channel.leave(); //Leave voice channel
-    logger.info('Booted bot from voice channel.');
-    return;
-  });
 
   // stupid
   command(client, 'stupid', (message) => {
@@ -155,6 +146,9 @@ client.on('ready', () => {
         ')'
     );
   });
+
+  // Reaction roles
+  roleClaim(client);
 });
 
 // Login Discord
