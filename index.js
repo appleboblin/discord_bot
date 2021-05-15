@@ -24,7 +24,7 @@ const { prefix } = config;
 // Active when Discord client is ready
 client.on('ready', () => {
   // Set bot name
-  client.user.setUsername('JoBot');
+  client.user.setUsername('JoBot_mini');
   logger.info('Bot Name set');
 
   // Commands
@@ -168,7 +168,7 @@ client.once('ready', () => {
   client.user.setPresence({
     status: 'available',
     activity: {
-      name: `${prefix}help for more information`,
+      name: `${prefix}help || xp-system testing`,
       type: 'PLAYING',
     },
   });
