@@ -86,7 +86,7 @@ module.exports = {
                     const dispatcher = connection.play('media/' + mediaFile); // get file to play
 
                     dispatcher.on('start', () => {
-                      logger.info(soundFile + ' is now playing!');
+                      logger.info(mediaFile + ' is now playing!');
                     });
 
                     dispatcher.on('finish', () => {
