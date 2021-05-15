@@ -6,7 +6,7 @@ A bot for Discord
 
 1. Clone repo and `cd` to directory
 2. Create `token.json` in the directory, copy your bot token created from [discord developer portal](https://discord.com/developers/applications) into the file. Format: `{"discord_token": "Your bot token"}`
-3. Configure `index.js` as needed, `node index.js` to start
+3. Configure `index.js` and `config.json` as needed, `node index.js` to start
 
 # Usage
 
