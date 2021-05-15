@@ -19,6 +19,6 @@
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5",
     "wordcloud": "^1.2.1",
-    "ytdl-core": "^4.7.0"
+    "ytdl-core": "^4.8.0"
   }
 }
