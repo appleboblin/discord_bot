@@ -5,17 +5,19 @@ const client = new Discord.Client();
 // require custom files
 const config = require('./config.json');
 const token = require('./token.json');
-const command = require('./function/command');
-const welcomeMessage = require('./function/welcome-message');
-const privateMessage = require('./function/private-message');
-const playMedia = require('./function/play-audio');
+const {
+  command,
+  welcomeMessage,
+  privateMessage,
+  helpCommand,
+  reactPhrase,
+} = require('./function/generalCommands');
+const { playMedia, playMusic } = require('./function/mediaPlayer');
 const logger = require('./function/logger');
-const helpCommand = require('./function/help-command');
-const reactPhrase = require('./function/react-phrase');
-const fetchRecent = require('./function/fetch-recent');
+const { fetchRecent } = require('./function/fetchRecent');
 
 // increase the limit
-require('events').EventEmitter.defaultMaxListeners = 10;
+require('events').EventEmitter.defaultMaxListeners = 20;
 
 // Get prefix from config
 const { prefix } = config;
@@ -75,7 +77,7 @@ client.on('ready', () => {
   privateMessage(client, 'Ding', 'dong');
 
   // React to phrase
-  reactPhrase(client, 'pew pew');
+  reactPhrase(client, 'horse girl');
 
   // Welcome message
   welcomeMessage(
@@ -95,14 +97,17 @@ client.on('ready', () => {
   // help
   helpCommand(client, 'help', (message) => {});
 
-  // Play Media
-  playMedia(client, 'sound', (message) => {});
+  // Play Local Media
+  playMedia(client, 'media', (message) => {});
 
   // Fetch recent message
   fetchRecent(client, 'fetch', (message) => {});
 
-  // Kick bot from voice
-  command(client, 'leave', (message) => {
+  // Play Music
+  playMusic(client, ['play', 'stop', 'skip'], (message) => {});
+
+  //leave 2
+  command(client, 'leave2', (message) => {
     if (!message.guild.me.voice.channel) {
       logger.info('Bot not in voice channel');
       return message.channel.send('Not in voice channel'); // If the bot is not in a voice channel, then return a message
