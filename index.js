@@ -1,5 +1,6 @@
 // Requirements
 const Discord = require('discord.js');
+
 // Set Discord client
 const client = new Discord.Client();
 // require custom files
@@ -19,9 +20,11 @@ const {
   fetchRecent,
   polls,
   welcomeMessage,
-  memberCount,
-  tempMessage,
+  //memberCount,
+  //tempMessage,
 } = require('./function/coolCommands');
+const mongo = require('./function/mongo');
+const welcome = require('./function/welcome');
 
 // increase the limit
 require('events').EventEmitter.defaultMaxListeners = 20;
@@ -159,15 +162,23 @@ client.on('ready', () => {
   polls(client);
 
   // Welcome message when new user joins
-  welcomeMessage(client);
+  //welcomeMessage(client);
 
   // member count
-  memberCount(client);
+  //memberCount(client);
 
-  // temp message
+  /*// temp message
   const guild = client.guilds.cache.get('214357162355326977'); // Target server
   const channel = guild.channels.cache.get('727736634753155112'); // Target channel
-  tempMessage(channel, 'Ring ring ling dong', 3);
+  command(client, 'tester', (message) => {
+    tempMessage(channel, 'Ring ring ling dong', 3);
+  });*/
+});
+
+// MongoDB
+client.on('ready', async () => {
+  console.log('Attempting to connect to mongo');
+  welcome(client);
 });
 
 // Login Discord

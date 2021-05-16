@@ -148,6 +148,7 @@ function polls(client, aliases, callback) {
 }
 
 // Welcome message when a user joins the server
+// Only if bot is in one server
 function welcomeMessage(client) {
   const channelId = '727736634753155112'; // channel to send welcome message
   const targetChannelId = '723911584761774080'; // channel want to link to
@@ -168,6 +169,7 @@ function welcomeMessage(client) {
 }
 
 // Member count
+// Only if bot is in one server
 function memberCount(client) {
   const channelId = '843517768561328139';
 
