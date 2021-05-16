@@ -19,6 +19,8 @@ const {
   fetchRecent,
   polls,
   welcomeMessage,
+  memberCount,
+  tempMessage,
 } = require('./function/coolCommands');
 
 // increase the limit
@@ -158,6 +160,14 @@ client.on('ready', () => {
 
   // Welcome message when new user joins
   welcomeMessage(client);
+
+  // member count
+  memberCount(client);
+
+  // temp message
+  const guild = client.guilds.cache.get('214357162355326977'); // Target server
+  const channel = guild.channels.cache.get('727736634753155112'); // Target channel
+  tempMessage(channel, 'Ring ring ling dong', 3);
 });
 
 // Login Discord

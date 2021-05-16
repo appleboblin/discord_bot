@@ -91,11 +91,13 @@ function fetchRecent(client, aliases, callback) {
 
 // Polls
 function polls(client, aliases, callback) {
+  // Automatic polls for channel
   const channelIds = [
     '843484482732032020', //polls
   ];
 
   const addReactions = (message) => {
+    // Set emote orders, need to use emote id for custom emotes
     message.react('298123460423581706');
 
     setTimeout(() => {
@@ -126,13 +128,17 @@ function polls(client, aliases, callback) {
           ')'
       );
     }
+    // Automatic react to message in certain channel.
     if (channelIds.includes(message.channel.id)) {
       addReactions(message);
       log();
+      // set command
     } else if (message.content.toLowerCase() === `${prefix}poll`) {
+      // delete command
       await message.delete();
-
+      // fetch recent 1 message
       const fetched = await message.channel.messages.fetch({ limit: 1 });
+      // Confirm and react to message
       if (fetched && fetched.first()) {
         addReactions(fetched.first());
       }
@@ -147,6 +153,7 @@ function welcomeMessage(client) {
   const targetChannelId = '723911584761774080'; // channel want to link to
 
   client.on('guildMemberAdd', (member) => {
+    // set welcome message
     const message = `Hi <@${
       member.id
     }>, you are now a part of Cockers. Head to ${member.guild.channels.cache
@@ -154,13 +161,52 @@ function welcomeMessage(client) {
       .toString()} for some hentai!`;
 
     const channel = member.guild.channels.cache.get(channelId);
+    // send message
     channel.send(message);
     logger.info(`${member.displayName}(${member.id}) joined the server`);
   });
 }
+
+// Member count
+function memberCount(client) {
+  const channelId = '843517768561328139';
+
+  const updateMembers = (guild) => {
+    const channel = guild.channels.cache.get(channelId);
+    channel.setName(`Members: ${guild.memberCount.toLocaleString()}`);
+  };
+
+  client.on('guildMemberAdd', (member) => {
+    updateMembers(member.guild);
+    logger.info('User joined. Updated member count.');
+  });
+  client.on('guildMemberRemove', (member) => {
+    updateMembers(member.guild);
+    logger.info('User left. Updated member count.');
+  });
+  // Only if bot is in one server
+  //const guild = client.guilds.cache.get('464316540490088448')
+  //updateMembers(guild)
+}
+
+// Temp message
+function tempMessage(channel, text, duration = -1) {
+  channel.send(text).then((message) => {
+    if (duration === -1) {
+      return;
+    }
+
+    setTimeout(() => {
+      message.delete();
+    }, 1000 * duration);
+  });
+}
+
 // exporting modules
 module.exports = {
   fetchRecent,
   polls,
   welcomeMessage,
+  memberCount,
+  tempMessage,
 };

@@ -179,7 +179,7 @@ async function firstMessage(client, id, text, reactions = []) {
         message[1].edit(text);
         // Change reactions
         addReactions(message[1], reactions);
-        logger.info('Set first message and reactions');
+        logger.info('Set message and reactions');
       }
     }
   });
