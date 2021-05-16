@@ -7,7 +7,7 @@ const config = require('./config.json');
 const token = require('./token.json');
 const {
   command,
-  welcomeMessage,
+  firstMessage,
   privateMessage,
   helpCommand,
   reactPhrase,
@@ -15,7 +15,11 @@ const {
 } = require('./function/generalCommands');
 const { playMedia, playMusic } = require('./function/mediaPlayer');
 const logger = require('./function/logger');
-const { fetchRecent, polls } = require('./function/coolCommands');
+const {
+  fetchRecent,
+  polls,
+  welcomeMessage,
+} = require('./function/coolCommands');
 
 // increase the limit
 require('events').EventEmitter.defaultMaxListeners = 20;
@@ -80,8 +84,8 @@ client.on('ready', () => {
   // React to phrase
   reactPhrase(client, 'pew pew');
 
-  // Welcome message
-  welcomeMessage(
+  // First message
+  firstMessage(
     client,
     '842369951826575360',
     'Biggie poopie Jojo\nThis is a message board\nWhat am i doing.... :exploding_head:\nHello Jonai\nNeed to work on message reactions next.\nThis is another new line',
@@ -151,6 +155,9 @@ client.on('ready', () => {
 
   // Polls
   polls(client);
+
+  // Welcome message when new user joins
+  welcomeMessage(client);
 });
 
 // Login Discord

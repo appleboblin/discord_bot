@@ -141,8 +141,26 @@ function polls(client, aliases, callback) {
   });
 }
 
+// Welcome message when a user joins the server
+function welcomeMessage(client) {
+  const channelId = '727736634753155112'; // channel to send welcome message
+  const targetChannelId = '723911584761774080'; // channel want to link to
+
+  client.on('guildMemberAdd', (member) => {
+    const message = `Hi <@${
+      member.id
+    }>, you are now a part of Cockers. Head to ${member.guild.channels.cache
+      .get(targetChannelId)
+      .toString()} for some hentai!`;
+
+    const channel = member.guild.channels.cache.get(channelId);
+    channel.send(message);
+    logger.info(`${member.displayName}(${member.id}) joined the server`);
+  });
+}
 // exporting modules
 module.exports = {
   fetchRecent,
   polls,
+  welcomeMessage,
 };

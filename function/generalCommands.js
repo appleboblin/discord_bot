@@ -151,8 +151,8 @@ function helpCommand(client, aliases, callback) {
   });
 }
 
-// Welcome Message
-async function welcomeMessage(client, id, text, reactions = []) {
+// First Message
+async function firstMessage(client, id, text, reactions = []) {
   const channel = await client.channels.fetch(id);
   const addReactions = (message, reactions) => {
     //remove 0 index
@@ -179,7 +179,7 @@ async function welcomeMessage(client, id, text, reactions = []) {
         message[1].edit(text);
         // Change reactions
         addReactions(message[1], reactions);
-        logger.info('Set welcome message and reactions');
+        logger.info('Set first message and reactions');
       }
     }
   });
@@ -231,8 +231,8 @@ function roleClaim(client) {
     const role = emojis[key];
     emojiText += `${emoji} = ${role}\n`;
   }
-  // Using welcomeMessage function
-  welcomeMessage(client, channelId, emojiText, reactions);
+  // Using firstMessage function
+  firstMessage(client, channelId, emojiText, reactions);
   logger.info('Set reaction roles');
   // Handel reactions to add roles
   const handleReaction = (reaction, user, add) => {
@@ -278,7 +278,7 @@ function roleClaim(client) {
 // exporting modules
 module.exports = {
   command,
-  welcomeMessage,
+  firstMessage,
   reactPhrase,
   privateMessage,
   roleClaim,
