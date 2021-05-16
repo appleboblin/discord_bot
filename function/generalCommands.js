@@ -9,7 +9,7 @@ function reactPhrase(client, triggerText) {
     if (
       //check where it receive the message from
       message.channel.type === 'text' &&
-      message.content.includes(triggerText)
+      message.content.includes(`${prefix}` + triggerText)
     ) {
       // action
       message.react('🐴');
@@ -277,21 +277,10 @@ function roleClaim(client) {
 
 // exporting modules
 module.exports = {
-  // command handler
   command,
-
-  // Welcome message
   welcomeMessage,
-
-  // reactPhrase
   reactPhrase,
-
-  // Private message
   privateMessage,
-
-  // Reaction roles
   roleClaim,
-
-  // Help command
   helpCommand,
 };

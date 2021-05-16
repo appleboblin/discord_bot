@@ -12,11 +12,10 @@ const {
   helpCommand,
   reactPhrase,
   roleClaim,
-  emojiList,
 } = require('./function/generalCommands');
 const { playMedia, playMusic } = require('./function/mediaPlayer');
 const logger = require('./function/logger');
-const { fetchRecent } = require('./function/fetchRecent');
+const { fetchRecent, polls } = require('./function/coolCommands');
 
 // increase the limit
 require('events').EventEmitter.defaultMaxListeners = 20;
@@ -149,6 +148,9 @@ client.on('ready', () => {
 
   // Reaction roles
   roleClaim(client);
+
+  // Polls
+  polls(client);
 });
 
 // Login Discord
