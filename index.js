@@ -39,8 +39,9 @@ client.on('ready', () => {
 
   // Commands
   // test message
-  command(client, ['no', 'test'], (message) => {
-    message.channel.send(`\:BOOBA:`);
+  command(client, [':BOOBA:', 'test'], (message) => {
+    message.delete();
+    message.channel.send(`<a:BOOBA:794297593621512192>`);
     logger.info('test');
   });
 
@@ -62,17 +63,13 @@ client.on('ready', () => {
       });
     } else {
       logger.info(
-        message.author.username +
-          '(' +
-          message.author.id +
-          ')' +
-          ` don't have permission`
+        `${message.author.username}(${message.author.id}) don't have permission`
       );
     }
   });
   // Set bot status
   command(client, 'status', (message) => {
-    const content = message.content.replace(`${prefix}status`, '');
+    const content = message.content.replace(`${prefix}status `, '');
 
     client.user.setPresence({
       status: 'available',
@@ -84,7 +81,7 @@ client.on('ready', () => {
   });
 
   //Private Message
-  privateMessage(client, 'Ding', 'dong');
+  privateMessage(client, 'La', 'Ma');
 
   // React to phrase
   reactPhrase(client, 'pew pew');
@@ -124,14 +121,14 @@ client.on('ready', () => {
   // jono
   command(client, 'jono', (message) => {
     message.channel.send(
-      message.author.username + ', Jono agrees that you are stupid'
+      `${message.author.username} , Jono agrees that you are stupid`
     );
   });
 
   // nick
   command(client, 'nick', (message) => {
     message.channel.send(
-      message.member.displayName + ', Jono agrees that you are stupid'
+      `${message.member.displayName} , Jono agrees that you are stupid`
     );
   });
 
@@ -143,15 +140,7 @@ client.on('ready', () => {
   // server info
   command(client, 'serverinfo', (message) => {
     message.channel.send(
-      'Server: ' +
-        message.guild.name +
-        '(' +
-        message.guild.id +
-        '), Channel: <#' +
-        message.channel.id +
-        '>(' +
-        message.channel.id +
-        ')'
+      `Server ${message.guild.name}(${message.guild.id}), Channel: <#${message.channel.id}>(${message.channel.id})`
     );
   });
 
@@ -192,7 +181,7 @@ client.once('ready', () => {
   client.user.setPresence({
     status: 'available',
     activity: {
-      name: `${prefix}help || xp-system testing`,
+      name: `${prefix}help || xp-system working in progress`,
       type: 'PLAYING',
     },
   });

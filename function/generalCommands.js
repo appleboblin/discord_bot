@@ -9,12 +9,12 @@ function reactPhrase(client, triggerText) {
     if (
       //check where it receive the message from
       message.channel.type === 'text' &&
-      message.content.includes(`${prefix}` + triggerText)
+      message.content.includes(triggerText)
     ) {
       // action
       message.react('🐴');
       message.react('👧');
-      logger.info('Reacted to ' + triggerText);
+      logger.info(`Reacted to ${triggerText}`);
     }
   });
 }
@@ -62,10 +62,6 @@ function helpCommand(client, aliases, callback) {
       if (content.startsWith(`${command} `) || content === command) {
         logger.info(`Running the command ${command}`);
         // pass message so callback have access to channel, content, anything it needs
-        let guildName = message.guild.name;
-        let guildId = message.guild.id;
-        let channelName = message.channel.name;
-        let channelId = message.channel.id;
         message.channel.send({
           embed: {
             color: 15277667,
@@ -134,16 +130,7 @@ function helpCommand(client, aliases, callback) {
           },
         });
         logger.info(
-          `Send '${prefix}help' to Server: ` +
-            guildName +
-            '(' +
-            guildId +
-            ')' +
-            ', Channel: ' +
-            channelName +
-            '(' +
-            channelId +
-            ')'
+          `Reacted to '${prefix}poll' in Server: ${message.guild.name}(${message.guild.id}), Channel: ${message.channel.name}(${message.channel.id})`
         );
         return;
       }
@@ -191,16 +178,12 @@ function privateMessage(client, triggerText, replyText) {
     if (
       //check where it receive the message from
       message.channel.type === 'text' &&
-      message.content.toLowerCase() === triggerText.toLowerCase()
+      message.content.toLowerCase() === triggerText
     ) {
       //send text
       message.author.send(replyText);
       logger.info(
-        `Sent Private Message to ` +
-          message.author.username +
-          '(' +
-          message.author.id +
-          ')'
+        `Sent Private Message to ${message.author.username}(${message.author.id})`
       );
     }
   });

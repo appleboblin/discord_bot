@@ -24,10 +24,6 @@ function fetchRecent(client, aliases, callback) {
       if (content.startsWith(`${command} `) || content === command) {
         logger.info(`Running ${command}`);
         message.channel.messages.fetch({ limit: 100 }).then((messages) => {
-          let guildName = message.guild.name;
-          let guildId = message.guild.id;
-          let channelName = message.channel.name;
-          let channelId = message.channel.id;
           logger.info(`Received ${messages.size} messages`);
           // Get dates
           let date_ob = new Date();
@@ -45,42 +41,20 @@ function fetchRecent(client, aliases, callback) {
           // Current seconds
           let seconds = date_ob.getSeconds();
           // Set path and unique file name
-          let dir =
-            './fetch/' +
-            year +
-            '-' +
-            month +
-            '-' +
-            date +
-            '_' +
-            hours +
-            ':' +
-            minutes +
-            ':' +
-            seconds +
-            '.json';
+          let dir = `./fetch/${year}-${month}-${date}-${hours}:${minutes}:${seconds}.json`;
           // Create empty array
           let discordMessage = [];
           // Add each message to array
           messages.forEach((message) => discordMessage.push(message.content));
           // Save array to file
           fs.writeFileSync(dir, JSON.stringify(discordMessage, null, 4));
-          logger.info(`Saved messages to ${dir} `);
+          logger.info(`Saved messages to ${dir}`);
           // Send file to channel
           message.channel.send({
             files: [dir],
           });
           logger.info(
-            "Send './fetch' to Server: " +
-              guildName +
-              '(' +
-              guildId +
-              ')' +
-              ', Channel: ' +
-              channelName +
-              '(' +
-              channelId +
-              ')'
+            `Reacted to '${prefix}poll' in Server: ${message.guild.name}(${message.guild.id}), Channel: ${message.channel.name}(${message.channel.id})`
           );
         });
         return;
@@ -90,7 +64,7 @@ function fetchRecent(client, aliases, callback) {
 }
 
 // Polls
-function polls(client, aliases, callback) {
+function polls(client) {
   // Automatic polls for channel
   const channelIds = [
     '843484482732032020', //polls
@@ -109,23 +83,10 @@ function polls(client, aliases, callback) {
   };
 
   client.on('message', async (message) => {
-    let guildName = message.guild.name;
-    let guildId = message.guild.id;
-    let channelName = message.channel.name;
-    let channelId = message.channel.id;
     //log
     function log() {
       logger.info(
-        `Reacted to '${prefix}poll' in Server: ` +
-          guildName +
-          '(' +
-          guildId +
-          ')' +
-          ', Channel: ' +
-          channelName +
-          '(' +
-          channelId +
-          ')'
+        `Reacted to '${prefix}poll' in Server: ${message.guild.name}(${message.guild.id}), Channel: ${message.channel.name}(${message.channel.id})`
       );
     }
     // Automatic react to message in certain channel.
@@ -133,7 +94,10 @@ function polls(client, aliases, callback) {
       addReactions(message);
       log();
       // set command
-    } else if (message.content.toLowerCase() === `${prefix}poll`) {
+    } else if (
+      message.content.toLowerCase() === `${prefix}poll` &&
+      message.channel.type === 'text'
+    ) {
       // delete command
       await message.delete();
       // fetch recent 1 message
