@@ -210,11 +210,9 @@ const mute = (client) => {
       channel.send('Please tag a user to mute.');
       return;
     }
-    const split = content.trim().split(' ');
 
     const { id } = target;
 
-    const targetMember = guild.members.cache.get(id);
     // connect to redis client
     const redisClient = await redis();
     try {
