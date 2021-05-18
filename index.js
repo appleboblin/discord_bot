@@ -4,7 +4,7 @@ const Discord = require('discord.js');
 // Set Discord client
 const client = new Discord.Client();
 // require custom files
-const config = require('./config.json');
+const { prefix } = require('./config.json');
 const token = require('./token.json');
 const {
   command,
@@ -19,27 +19,34 @@ const logger = require('./function/logger');
 const {
   fetchRecent,
   polls,
-  welcomeMessage,
+  //welcomeMessage,
   //memberCount,
   //tempMessage,
+  animatedEmoji,
 } = require('./function/coolCommands');
 const mongo = require('./function/mongo');
-const welcome = require('./function/welcome');
+const { welcome } = require('./function/welcome');
 
-// increase the limit
+// increase event limit
 require('events').EventEmitter.defaultMaxListeners = 20;
 
-// Get prefix from config
-const { prefix } = config;
 // Active when Discord client is ready
 client.on('ready', () => {
+  // Bypass animated emoji nitro
+  command(
+    client,
+    ['WEEEEE', 'BOOBA', 'Wala', 'TriFi', 'wall', 'boomerTUNE'],
+    (message) => {
+      animatedEmoji(message);
+    }
+  );
   // Set bot name
   client.user.setUsername('JoBot_mini');
   logger.info('Bot Name set');
 
   // Commands
   // test message
-  command(client, [':BOOBA:', 'test'], (message) => {
+  command(client, [':BOOBA:'], (message) => {
     message.delete();
     message.channel.send(`<a:BOOBA:794297593621512192>`);
     logger.info('test');
@@ -63,7 +70,7 @@ client.on('ready', () => {
       });
     } else {
       logger.info(
-        `${message.author.username}(${message.author.id}) don't have permission`
+        `${message.author.tag}(${message.author.id}) don't have permission`
       );
     }
   });
@@ -102,13 +109,17 @@ client.on('ready', () => {
   );
 
   // help
-  helpCommand(client, 'help', (message) => {});
+  command(client, 'help', (message) => {
+    helpCommand(message);
+  });
 
   // Play Local Media
   playMedia(client, 'media', (message) => {});
 
   // Fetch recent message
-  fetchRecent(client, 'fetch', (message) => {});
+  command(client, 'fetch', (message) => {
+    fetchRecent(message);
+  });
 
   // Play Music
   playMusic(client, ['play', 'stop', 'skip'], (message) => {});
@@ -175,7 +186,7 @@ client.login(token.discord_token);
 
 //Set Status
 client.once('ready', () => {
-  logger.info(`${client.user.username} is up and running.`);
+  logger.info(`${client.user.tag} is up and running.`);
 
   // Set launch status
   client.user.setPresence({
@@ -188,9 +199,9 @@ client.once('ready', () => {
 });
 
 client.once('reconnecting', () => {
-  logger.info(`${client.user.username} is reconnecting.`);
+  logger.info(`${client.user.tag} is reconnecting.`);
 });
 
 client.once('disconnect', () => {
-  logger.info(`${client.user.username} is disconnected.`);
+  logger.info(`${client.user.tag} is disconnected.`);
 });
