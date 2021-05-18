@@ -116,13 +116,13 @@ client.on('ready', () => {
   helpCommand(client);
 
   // Play Local Media
-  playMedia(client, 'media', (message) => {});
+  playMedia(client);
 
   // Fetch recent message
   fetchRecent(client);
 
   // Play Music
-  playMusic(client, ['play', 'stop', 'skip'], (message) => {});
+  playMusic(client);
 
   // stupid
   command(client, 'stupid', (message) => {
