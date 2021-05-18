@@ -19,7 +19,7 @@ function reactPhrase(client, triggerText) {
   });
 }
 
-function command(client, aliases, callback) {
+const command = (client, aliases, callback) => {
   // make things into array
   if (typeof aliases === 'string') {
     aliases = [aliases];
@@ -41,102 +41,81 @@ function command(client, aliases, callback) {
       }
     });
   });
-}
+};
 
 // help Command
-function helpCommand(client, aliases, callback) {
-  // make things into array
-  if (typeof aliases === 'string') {
-    aliases = [aliases];
-  }
-
-  client.on('message', (message) => {
-    // Ignore if bot says it
-    if (message.author.bot) return;
-    //get content of message
-    const { content } = message;
-    // Look for messages that have prefix and command
-    aliases.forEach((alias) => {
-      const command = `${prefix}${alias}`;
-      // if theres a command, log it and callback
-      if (content.startsWith(`${command} `) || content === command) {
-        logger.info(`Running the command ${command}`);
-        // pass message so callback have access to channel, content, anything it needs
-        message.channel.send({
-          embed: {
-            color: 15277667,
-            author: {
-              name: 'Ding Ding',
-              icon_url:
-                'https://cdn.discordapp.com/avatars/199872338609569792/d2ebe56ba66a5f95db256e48ed41c752.webp',
-            },
-            title: 'Stupid Commands I Got So Far.',
-            url: 'https://youtu.be/dQw4w9WgXcQ',
-            description: "Don't click it.",
-            fields: [
-              {
-                name: `${prefix}help`,
-                value: 'This embed message',
-              },
-              {
-                name: `${prefix}stupid`,
-                value: 'Prints out `You Stupid.`',
-              },
-              {
-                name: `${prefix}jono`,
-                value: 'Prints out `username, Jono agrees that you are stupid`',
-              },
-              {
-                name: `${prefix}nick`,
-                value: 'Prints out `nickname, Jono agrees that you are stupid`',
-              },
-              {
-                name: 'horse girl',
-                value:
-                  'Any message that contains `horse girl`, bot will react 🐴 👧',
-              },
-              {
-                name: `${prefix}url`,
-                value: 'Return your avatarURL',
-              },
-              {
-                name: `${prefix}fetch`,
-                value:
-                  'Fetch 100 most recent messages from the channel and send as `.json`',
-              },
-              {
-                name: `${prefix}play \`Music URL\``,
-                value: 'Play music',
-              },
-              {
-                name: `${prefix}skip`,
-                value: 'Skip queue',
-              },
-              {
-                name: `${prefix}stop`,
-                value: 'Stop audio',
-              },
-              {
-                name: `${prefix}media \`arguments\``,
-                value: `\`${prefix}media list\` for media list. \`${prefix}media filename\` to play media, include file extension.`,
-              },
-            ],
-            timestamp: new Date(),
-            footer: {
-              icon_url:
-                'https://cdn.discordapp.com/avatars/199872338609569792/d2ebe56ba66a5f95db256e48ed41c752.webp',
-              text: 'Jobo the Bot',
-            },
-          },
-        });
-        logger.info(
-          `Reacted to '${prefix}poll' in Server: ${message.guild.name}(${message.guild.id}), Channel: ${message.channel.name}(${message.channel.id})`
-        );
-        return;
-      }
-    });
+const helpCommand = (message) => {
+  message.channel.send({
+    embed: {
+      color: 15277667,
+      author: {
+        name: 'Ding Ding',
+        icon_url:
+          'https://cdn.discordapp.com/avatars/199872338609569792/d2ebe56ba66a5f95db256e48ed41c752.webp',
+      },
+      title: 'Stupid Commands I Got So Far.',
+      url: 'https://youtu.be/dQw4w9WgXcQ',
+      description: "Don't click it.",
+      fields: [
+        {
+          name: `${prefix}help`,
+          value: 'This embed message',
+        },
+        {
+          name: `${prefix}stupid`,
+          value: 'Prints out `You Stupid.`',
+        },
+        {
+          name: `${prefix}jono`,
+          value: 'Prints out `username, Jono agrees that you are stupid`',
+        },
+        {
+          name: `${prefix}nick`,
+          value: 'Prints out `nickname, Jono agrees that you are stupid`',
+        },
+        {
+          name: 'horse girl',
+          value: 'Any message that contains `horse girl`, bot will react 🐴 👧',
+        },
+        {
+          name: `${prefix}url`,
+          value: 'Return your avatarURL',
+        },
+        {
+          name: `${prefix}fetch`,
+          value:
+            'Fetch 100 most recent messages from the channel and send as `.json`',
+        },
+        {
+          name: `${prefix}play \`Music URL\``,
+          value: 'Play music',
+        },
+        {
+          name: `${prefix}skip`,
+          value: 'Skip queue',
+        },
+        {
+          name: `${prefix}stop`,
+          value: 'Stop audio',
+        },
+        {
+          name: `${prefix}media \`arguments\``,
+          value: `\`${prefix}media list\` for media list. \`${prefix}media filename\` to play media, include file extension.`,
+        },
+      ],
+      timestamp: new Date(),
+      footer: {
+        icon_url:
+          'https://cdn.discordapp.com/avatars/199872338609569792/d2ebe56ba66a5f95db256e48ed41c752.webp',
+        text: 'Jobo the Bot',
+      },
+    },
   });
-}
+  logger.info(
+    `Reacted to '${prefix}poll' in Server: ${message.guild.name}(${message.guild.id}), Channel: ${message.channel.name}(${message.channel.id})`
+  );
+  return;
+};
 
 // First Message
 async function firstMessage(client, id, text, reactions = []) {
@@ -183,7 +162,7 @@ function privateMessage(client, triggerText, replyText) {
       //send text
       message.author.send(replyText);
       logger.info(
-        `Sent Private Message to ${message.author.username}(${message.author.id})`
+        `Sent Private Message to ${message.author.tag}(${message.author.id})`
       );
     }
   });
@@ -198,8 +177,8 @@ function roleClaim(client) {
     client.emojis.cache.find((emoji) => emoji.name === emojiName);
   // configure emoji and role
   const emojis = {
-    BOOBA: 'incel',
-    jynSuh: 'weeb+',
+    WEEEEE: 'incel',
+    Wala: 'weeb+',
   };
 
   const reactions = [];
@@ -238,10 +217,10 @@ function roleClaim(client) {
 
     if (add) {
       member.roles.add(role);
-      logger.info(`Added ${roleName} role to ${user.username}(${user.id})`);
+      logger.info(`Added ${roleName} role to ${user.tag}(${user.id})`);
     } else {
       member.roles.remove(role);
-      logger.info(`Removed ${roleName} role to ${user.username}(${user.id})`);
+      logger.info(`Removed ${roleName} role from ${user.tag}(${user.id})`);
     }
   };
 
