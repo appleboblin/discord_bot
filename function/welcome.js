@@ -81,11 +81,11 @@ module.exports = (client) => {
     // Allows @ user <@>!
     channel.send(text.replace(/<@>/g, `<@${member.id}>`));
   };
-
+  // simulate when a new user joins
   command(client, 'simjoin', (message) => {
     onJoin(message.member);
   });
-
+  // send message when a new user joins
   client.on('guildMemberAdd', (member) => {
     onJoin(member);
   });
