@@ -4,7 +4,7 @@ const { command } = require('./generalCommands');
 const welcomeSchema = require('./schemas/welcomeSchema');
 const logger = require('./logger');
 
-module.exports = (client) => {
+const welcome = (client) => {
   //!setwelcome <message>
   const cache = {}; // guildId: [channelId, text]
 
@@ -89,4 +89,8 @@ module.exports = (client) => {
   client.on('guildMemberAdd', (member) => {
     onJoin(member);
   });
+};
+
+module.exports = {
+  welcome,
 };
