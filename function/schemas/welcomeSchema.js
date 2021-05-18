@@ -1,6 +1,7 @@
 // requirements
 const mongoose = require('mongoose');
 
+// key requirements
 const reqString = {
   // Primary key: type
   type: String,
