@@ -44,77 +44,80 @@ const command = (client, aliases, callback) => {
 };
 
 // help Command
-const helpCommand = (message) => {
-  message.channel.send({
-    embed: {
-      color: 15277667,
-      author: {
-        name: 'Ding Ding',
-        icon_url:
-          'https://cdn.discordapp.com/avatars/199872338609569792/d2ebe56ba66a5f95db256e48ed41c752.webp',
+const helpCommand = (client) => {
+  command(client, 'help', (message) => {
+    message.channel.send({
+      embed: {
+        color: 15277667,
+        author: {
+          name: 'Ding Ding',
+          icon_url:
+            'https://cdn.discordapp.com/avatars/199872338609569792/d2ebe56ba66a5f95db256e48ed41c752.webp',
+        },
+        title: 'Stupid Commands I Got So Far.',
+        url: 'https://youtu.be/dQw4w9WgXcQ',
+        description: "Don't click it.",
+        fields: [
+          {
+            name: `${prefix}help`,
+            value: 'This embed message',
+          },
+          {
+            name: `${prefix}stupid`,
+            value: 'Prints out `You Stupid.`',
+          },
+          {
+            name: `${prefix}jono`,
+            value: 'Prints out `username, Jono agrees that you are stupid`',
+          },
+          {
+            name: `${prefix}nick`,
+            value: 'Prints out `nickname, Jono agrees that you are stupid`',
+          },
+          {
+            name: 'horse girl',
+            value:
+              'Any message that contains `horse girl`, bot will react 🐴 👧',
+          },
+          {
+            name: `${prefix}url`,
+            value: 'Return your avatarURL',
+          },
+          {
+            name: `${prefix}fetch`,
+            value:
+              'Fetch 100 most recent messages from the channel and send as `.json`',
+          },
+          {
+            name: `${prefix}play \`Music URL\``,
+            value: 'Play music',
+          },
+          {
+            name: `${prefix}skip`,
+            value: 'Skip queue',
+          },
+          {
+            name: `${prefix}stop`,
+            value: 'Stop audio',
+          },
+          {
+            name: `${prefix}media \`arguments\``,
+            value: `\`${prefix}media list\` for media list. \`${prefix}media filename\` to play media, include file extension.`,
+          },
+        ],
+        timestamp: new Date(),
+        footer: {
+          icon_url:
+            'https://cdn.discordapp.com/avatars/199872338609569792/d2ebe56ba66a5f95db256e48ed41c752.webp',
+          text: 'Jobo the Bot',
+        },
       },
-      title: 'Stupid Commands I Got So Far.',
-      url: 'https://youtu.be/dQw4w9WgXcQ',
-      description: "Don't click it.",
-      fields: [
-        {
-          name: `${prefix}help`,
-          value: 'This embed message',
-        },
-        {
-          name: `${prefix}stupid`,
-          value: 'Prints out `You Stupid.`',
-        },
-        {
-          name: `${prefix}jono`,
-          value: 'Prints out `username, Jono agrees that you are stupid`',
-        },
-        {
-          name: `${prefix}nick`,
-          value: 'Prints out `nickname, Jono agrees that you are stupid`',
-        },
-        {
-          name: 'horse girl',
-          value: 'Any message that contains `horse girl`, bot will react 🐴 👧',
-        },
-        {
-          name: `${prefix}url`,
-          value: 'Return your avatarURL',
-        },
-        {
-          name: `${prefix}fetch`,
-          value:
-            'Fetch 100 most recent messages from the channel and send as `.json`',
-        },
-        {
-          name: `${prefix}play \`Music URL\``,
-          value: 'Play music',
-        },
-        {
-          name: `${prefix}skip`,
-          value: 'Skip queue',
-        },
-        {
-          name: `${prefix}stop`,
-          value: 'Stop audio',
-        },
-        {
-          name: `${prefix}media \`arguments\``,
-          value: `\`${prefix}media list\` for media list. \`${prefix}media filename\` to play media, include file extension.`,
-        },
-      ],
-      timestamp: new Date(),
-      footer: {
-        icon_url:
-          'https://cdn.discordapp.com/avatars/199872338609569792/d2ebe56ba66a5f95db256e48ed41c752.webp',
-        text: 'Jobo the Bot',
-      },
-    },
+    });
+    logger.info(
+      `Reacted to '${prefix}help' in Server: ${message.guild.name}(${message.guild.id}), Channel: ${message.channel.name}(${message.channel.id})`
+    );
+    return;
   });
-  logger.info(
-    `Reacted to '${prefix}poll' in Server: ${message.guild.name}(${message.guild.id}), Channel: ${message.channel.name}(${message.channel.id})`
-  );
-  return;
 };
 
 // First Message
@@ -237,6 +240,61 @@ function roleClaim(client) {
   });
 }
 
+// kick
+const kick = (message) => {
+  const { member, mentions } = message;
+
+  const tag = `<@${member.id}>`;
+
+  if (
+    member.hasPermission('ADMINISTRATOR') ||
+    member.hasPermission('KICK_MEMBERS')
+  ) {
+    const target = mentions.users.first();
+    if (target) {
+      const targetMember = message.guild.members.cache.get(target.id);
+      targetMember.kick();
+      message.channel.send(`${tag} That user has kicked`);
+      logger.info(
+        `${tag} has been kicked in Server: ${message.guild.name}(${message.guild.id}), Channel: ${message.channel.name}(${message.channel.id}`
+      );
+    } else {
+      message.channel.send(`${tag} Please specify someone to kick.`);
+    }
+  } else {
+    message.channel.send(
+      `${tag} You do not have permission to use this command.`
+    );
+  }
+};
+
+// ban
+const ban = (message) => {
+  const { member, mentions } = message;
+
+  const tag = `<@${member.id}>`;
+
+  if (
+    member.hasPermission('ADMINISTRATOR') ||
+    member.hasPermission('BAN_MEMBERS')
+  ) {
+    const target = mentions.users.first();
+    if (target) {
+      const targetMember = message.guild.members.cache.get(target.id);
+      targetMember.ban();
+      message.channel.send(`${tag} That user has been banned`);
+      logger.info(
+        `${tag} has been banned in Server: ${message.guild.name}(${message.guild.id}), Channel: ${message.channel.name}(${message.channel.id}`
+      );
+    } else {
+      message.channel.send(`${tag} Please specify someone to ban.`);
+    }
+  } else {
+    message.channel.send(
+      `${tag} You do not have permission to use this command.`
+    );
+  }
+};
 // exporting modules
 module.exports = {
   command,
@@ -245,4 +303,6 @@ module.exports = {
   privateMessage,
   roleClaim,
   helpCommand,
+  kick,
+  ban,
 };

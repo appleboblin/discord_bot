@@ -16,6 +16,7 @@
     "mongoose": "^5.12.9",
     "node-fetch": "^2.6.1",
     "opusscript": "0.0.8",
+    "redis": "^3.1.2",
     "twdl": "^2.4.4",
     "twit": "^2.2.11",
     "winston": "^3.3.3",

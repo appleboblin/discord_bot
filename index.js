@@ -25,7 +25,11 @@ const {
   animatedEmoji,
 } = require('./function/coolCommands');
 const mongo = require('./function/mongo');
-const { welcome } = require('./function/welcome');
+const {
+  welcome,
+  messageCounter,
+  mute,
+} = require('./function/generalCommandsDatabase');
 
 // increase event limit
 require('events').EventEmitter.defaultMaxListeners = 20;
@@ -109,17 +113,13 @@ client.on('ready', () => {
   );
 
   // help
-  command(client, 'help', (message) => {
-    helpCommand(message);
-  });
+  helpCommand(client);
 
   // Play Local Media
   playMedia(client, 'media', (message) => {});
 
   // Fetch recent message
-  command(client, 'fetch', (message) => {
-    fetchRecent(message);
-  });
+  fetchRecent(client);
 
   // Play Music
   playMusic(client, ['play', 'stop', 'skip'], (message) => {});
@@ -175,10 +175,12 @@ client.on('ready', () => {
   });*/
 });
 
-// MongoDB
+// MongoDB commands
 client.on('ready', async () => {
   console.log('Attempting to connect to mongo');
   welcome(client);
+  messageCounter(client);
+  mute(client);
 });
 
 // Login Discord
@@ -204,4 +206,10 @@ client.once('reconnecting', () => {
 
 client.once('disconnect', () => {
   logger.info(`${client.user.tag} is disconnected.`);
+});
+
+client.once('error', (err) => {
+  logger.error('Discord client error:', err);
+  client.quit();
+  reject(err);
 });

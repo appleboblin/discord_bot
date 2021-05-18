@@ -2,46 +2,49 @@
 const fs = require('fs');
 // Destructure prefix
 const { prefix } = require('../config.json');
+const { command } = require('./generalCommands');
 // call logger
 const logger = require('./logger');
 
 // Fetch recent 100 messages
-const fetchRecent = (message) => {
-  message.channel.messages.fetch({ limit: 100 }).then((messages) => {
-    logger.info(`Received ${messages.size} messages`);
-    // Get dates
-    let date_ob = new Date();
-    // Current date
-    // Adjust 0 before single digit date
-    let date = ('0' + date_ob.getDate()).slice(-2);
-    // Current month
-    let month = ('0' + (date_ob.getMonth() + 1)).slice(-2);
-    // Current year
-    let year = date_ob.getFullYear();
-    // Current hours
-    let hours = date_ob.getHours();
-    // Current minutes
-    let minutes = date_ob.getMinutes();
-    // Current seconds
-    let seconds = date_ob.getSeconds();
-    // Set path and unique file name
-    let dir = `./fetch/${year}-${month}-${date}-${hours}:${minutes}:${seconds}.json`;
-    // Create empty array
-    let discordMessage = [];
-    // Add each message to array
-    messages.forEach((message) => discordMessage.push(message.content));
-    // Save array to file
-    fs.writeFileSync(dir, JSON.stringify(discordMessage, null, 4));
-    logger.info(`Saved messages to ${dir}`);
-    // Send file to channel
-    message.channel.send({
-      files: [dir],
+const fetchRecent = (client) => {
+  command(client, 'fetch', (message) => {
+    message.channel.messages.fetch({ limit: 100 }).then((messages) => {
+      logger.info(`Received ${messages.size} messages`);
+      // Get dates
+      let date_ob = new Date();
+      // Current date
+      // Adjust 0 before single digit date
+      let date = ('0' + date_ob.getDate()).slice(-2);
+      // Current month
+      let month = ('0' + (date_ob.getMonth() + 1)).slice(-2);
+      // Current year
+      let year = date_ob.getFullYear();
+      // Current hours
+      let hours = date_ob.getHours();
+      // Current minutes
+      let minutes = date_ob.getMinutes();
+      // Current seconds
+      let seconds = date_ob.getSeconds();
+      // Set path and unique file name
+      let dir = `./fetch/${year}-${month}-${date}-${hours}:${minutes}:${seconds}.json`;
+      // Create empty array
+      let discordMessage = [];
+      // Add each message to array
+      messages.forEach((message) => discordMessage.push(message.content));
+      // Save array to file
+      fs.writeFileSync(dir, JSON.stringify(discordMessage, null, 4));
+      logger.info(`Saved messages to ${dir}`);
+      // Send file to channel
+      message.channel.send({
+        files: [dir],
+      });
+      logger.info(
+        `Reacted to '${prefix}fetch' in Server: ${message.guild.name}(${message.guild.id}), Channel: ${message.channel.name}(${message.channel.id})`
+      );
     });
-    logger.info(
-      `Reacted to '${prefix}poll' in Server: ${message.guild.name}(${message.guild.id}), Channel: ${message.channel.name}(${message.channel.id})`
-    );
+    return;
   });
-  return;
 };
 
 // Polls
