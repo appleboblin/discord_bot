@@ -27,15 +27,17 @@ const options = {
 };
 const dest = '835471079303544834';
 
-async function nugget() {
+const nugget = async () => {
   var results = await twdl.downloadUrls(tweetUrls, options);
   imgUrl = mediaUrls.forEach((e) => {
     //Send when getting info
     client.channels.cache.get(dest).send(e);
     logger.info('New image sent to channel');
+    var removeFirstInArray = mediaUrls.shift();
   });
+  message.channel.send('hi');
   return;
-}
+};
 
 function sendImage(client, triggerText) {
   client.on('message', (message) => {
@@ -45,9 +47,9 @@ function sendImage(client, triggerText) {
       message.channel.id === '843726160324067389'
     ) {
       // action
+      tweetUrls = [];
       tweetUrls.push(message.content);
       nugget();
-      tweetUrls = [];
       mediaUrls = [];
     }
   });
