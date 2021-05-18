@@ -14,7 +14,7 @@ const welcome = (client) => {
     const { member, channel, content, guild } = message;
 
     if (!member.hasPermission('ADMINISTRATOR')) {
-      channel.send('No permission');
+      channel.send('You do not have permission to run this command.');
       return;
     }
 
@@ -143,6 +143,9 @@ const mute = (client) => {
       const role = getRole(guild);
 
       member.roles.remove(role);
+      logger.info(
+        `Mute time out, unmuted ${member.user.username}#${member.user.discriminator}(${member.id})`
+      );
     }
   });
 
@@ -154,14 +157,18 @@ const mute = (client) => {
     const role = getRole(member.guild);
     if (role) {
       member.roles.add(role);
-      logger.info('Muted ' + member.id);
+      logger.info(
+        `Muted ${member.user.username}#${member.user.discriminator}(${member.id})`
+      );
     }
   };
   const removeRole = (member) => {
     const role = getRole(member.guild);
     if (role) {
       member.roles.remove(role);
-      logger.info('Muted ' + member.id);
+      logger.info(
+        `Unmuted ${member.user.username}#${member.user.discriminator}(${member.id})`
+      );
     }
   };
   const onJoin = async (member) => {
@@ -207,21 +214,19 @@ const mute = (client) => {
 
     const { id } = target;
 
-    console.log('ID:', id);
-
     const targetMember = guild.members.cache.get(id);
-    removeRole(targetMember);
     // connect to redis client
     const redisClient = await redis();
     try {
-      const redisKey = `${redisKeyPrefix}${id}-${guild.id}`;
-
-      if (split.length >= 2) {
-        redisClient.del(redisKey);
-      } else {
-        // not send TTL if value less than 0
-        redisClient.del(redisKey);
-      }
+      redisClient.get(`${redisKeyPrefix}${id}-${guild.id}`, (err, result) => {
+        if (err) {
+          logger.error('Redis GET error:', err);
+        } else if (result) {
+          removeRole(member);
+        } else {
+          logger.error('The user is not muted');
+        }
+      });
     } finally {
       redisClient.quit();
     }
@@ -229,7 +234,7 @@ const mute = (client) => {
   command(client, 'mute', async (message) => {
     // !mute @ duration duration_type
 
-    const syntax = '!mute <@> <duration as a number> <m, h, d, or life>';
+    const syntax = '!mute <@> <duration #> <m, h, d, or life>';
 
     const { member, channel, content, mentions, guild } = message;
 
@@ -237,10 +242,34 @@ const mute = (client) => {
       channel.send('You do not have permission to run this command.');
       return;
     }
+
+    // mentioned user
+    const target = mentions.users.first();
+    const { id } = target;
+    const targetMember = guild.members.cache.get(id);
+    // connect to redis client
+    const redisClient = await redis();
     // formatting
     const split = content.trim().split(' ');
 
-    if (split.length !== 4) {
+    // check if someone is mentioned
+    if (!target) {
+      channel.send('Please tag a user to mute.');
+      return;
+    }
+    let life = 'life';
+    if (split[2].includes(life)) {
+      // Perm mute
+      giveRole(targetMember);
+      try {
+        const redisKey = `${redisKeyPrefix}${id}-${guild.id}`;
+        // no TTL send
+        redisClient.set(redisKey, 'true');
+      } finally {
+        redisClient.quit();
+      }
+      return;
+    } else if (split.length !== 4) {
       channel.send('Please use the correct command syntax: ' + syntax);
       return;
     }
@@ -268,21 +297,10 @@ const mute = (client) => {
     const seconds = duration * durations[durationType];
     // 5 m
     // seconds = 5 * m
-    const target = mentions.users.first();
 
-    if (!target) {
-      channel.send('Please tag a user to mute.');
-      return;
-    }
-
-    const { id } = target;
-
-    console.log('ID:', id);
-
-    const targetMember = guild.members.cache.get(id);
+    // mute user
     giveRole(targetMember);
-    // connect to redis client
-    const redisClient = await redis();
+    // log that to data base
     try {
       const redisKey = `${redisKeyPrefix}${id}-${guild.id}`;
 
