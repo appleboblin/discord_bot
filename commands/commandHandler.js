@@ -45,9 +45,13 @@ const allCommands = {};
 
 module.exports = (commandOptions) => {
   let { commands, permissions = [] } = commandOptions;
+  if (!commands) {
+    return;
+  }
   // Make sure commands and aliases are in array
   if (typeof commands === 'string') {
     commands = [commands];
+
   }
 
   console.log(`Found command "${commands[0]}"`);
@@ -55,7 +59,7 @@ module.exports = (commandOptions) => {
 
   if (permissions.length) {
     if (typeof permissions === 'string') {
-      permission = [permission];
+      permissions = [permissions];
     }
     validatePermissions(permissions);
   }
@@ -66,7 +70,7 @@ module.exports = (commandOptions) => {
       ...commandOptions,
       commands,
       permissions,
-    }
+    };
   }
 };
 
@@ -96,7 +100,7 @@ module.exports.listen = (client) => {
       // check permission
       for (const permission of permissions) {
         if (!member.hasPermission(permission)) {
-          message.reply(permissionError);
+          message.channel.send(permissionError);
           return;
         }
       }
@@ -108,7 +112,7 @@ module.exports.listen = (client) => {
         );
 
         if (!role || !member.roles.cache.has(role.id)) {
-          message.reply(`You need "${requiredRole}" to use this command.`);
+          message.channel.send(`You need "${requiredRole}" to use this command.`);
           return;
         }
       }
@@ -118,7 +122,7 @@ module.exports.listen = (client) => {
         arguments.length < minArgs ||
         (maxArgs !== null && arguments.length > maxArgs)
       ) {
-        message.reply(`Invalid syntax. Use ${prefix}${alias} ${expectedArgs}`);
+        message.channel.send(`Invalid syntax. Use ${name} ${expectedArgs}`);
         return;
       }
 
