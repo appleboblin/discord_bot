@@ -1,15 +1,22 @@
+// allows relative path
+require('module-alias/register');
+
+// Discord client
 const Discord = require('discord.js');
 const client = new Discord.Client();
 
+// requirements
 const { prefix } = require('./config.json');
 const token = require('./token.json');
-const logger = require('./function/logger');
+const logger = require('./util/logger');
 const loadCommands = require('./commands/loadCommands');
+const loadFeatures = require('./features/loadFeatures');
 
+// commands
 client.on('ready', async () => {
   console.log('The client is ready!');
-
   loadCommands(client);
+  loadFeatures(client);
 });
 
 //Login Discord

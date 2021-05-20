@@ -1,5 +1,5 @@
 {
-  "name": "twitterbot",
+  "name": "discordbot",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,6 +13,7 @@
     "discord.js": "^12.5.3",
     "dotenv": "^8.2.0",
     "fs": "0.0.1-security",
+    "module-alias": "^2.2.2",
     "mongoose": "^5.12.9",
     "node-fetch": "^2.6.1",
     "opusscript": "0.0.8",
@@ -21,7 +22,6 @@
     "twit": "^2.2.11",
     "winston": "^3.3.3",
     "winston-daily-rotate-file": "^4.5.5",
-    "wordcloud": "^1.2.1",
     "ytdl-core": "^4.8.0"
   }
 }

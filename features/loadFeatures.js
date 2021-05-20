@@ -1,13 +1,11 @@
+//requirements
 const path = require('path');
 const fs = require('fs');
 const logger = require('../util/logger');
-module.exports = (client) => {
-  const baseFile = 'commandHandler.js';
-  const commandBase = require(`./${baseFile}`);
 
-  const commands = [];
+module.exports = (client) => {
   // get all file from the folder and automatically require, so don't need to do it manually
-  const readCommands = (dir) => {
+  const readFeatures = (dir) => {
     // return all file within directory
     const files = fs.readdirSync(path.join(__dirname, dir));
     // loop through all the file
@@ -16,21 +14,15 @@ module.exports = (client) => {
       const stat = fs.lstatSync(path.join(__dirname, dir, file));
       // recursive command until find all the files
       if (stat.isDirectory()) {
-        readCommands(path.join(dir, file));
-      } else if (file !== baseFile && file !== 'loadCommands.js') {
+        readFeatures(path.join(dir, file));
+      } else if (file !== 'loadFeatures.js') {
         // import file
-        const option = require(path.join(__dirname, dir, file));
-        commands.push(option);
-        if (client) {
-          commandBase(option);
-        }
+        const feature = require(path.join(__dirname, dir, file));
+        logger.info(`Enabling "${file}"`);
+        feature(client);
       }
     }
   };
-  logger.info('Loading Commands');
-  readCommands('.');
-  if (client) {
-    commandBase.listen(client);
-  }
-  return commands;
+  logger.info('Loading Features');
+  readFeatures('.');
 };

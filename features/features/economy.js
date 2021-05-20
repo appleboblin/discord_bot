@@ -1,5 +1,6 @@
-const mongo = require('./function/mongo');
-const profileSchema = require('./function/schemas/profile-schema');
+const mongo = require('../../util/mongo');
+const profileSchema = require('../../schemas/profileSchema');
+const logger = require('../../util/logger');
 
 const coinsCache = {}; // { 'guildId-userId': coins }
 
@@ -8,7 +9,7 @@ module.exports = (client) => {};
 module.exports.addCoins = async (guildId, userId, coins) => {
   return await mongo().then(async (mongoose) => {
     try {
-      console.log('Running findOneAndUpdate()');
+      //logger.info('Running findOneAndUpdate()');
 
       const result = await profileSchema.findOneAndUpdate(
         {
@@ -28,7 +29,9 @@ module.exports.addCoins = async (guildId, userId, coins) => {
         }
       );
 
-      console.log('RESULT:', result);
+      logger.info(
+        `RESULT: guildId: ${result._doc.guildId}, userId: ${result._doc.userId}, coins: ${result._doc.coins}`
+      );
 
       coinsCache[`${guildId}-${userId}`] = result.coins;
 
@@ -47,20 +50,22 @@ module.exports.getCoins = async (guildId, userId) => {
 
   return await mongo().then(async (mongoose) => {
     try {
-      console.log('Running findOne()');
+      //logger.info('Running findOne()');
 
       const result = await profileSchema.findOne({
         guildId,
         userId,
       });
 
-      console.log('RESULT:', result);
+      logger.info(
+        `RESULT: guildId: ${result._doc.guildId}, userId: ${result._doc.userId}, coins: ${result._doc.coins}`
+      );
 
       let coins = 0;
       if (result) {
         coins = result.coins;
       } else {
-        console.log('Inserting a document');
+        logger.info('Inserting a document');
         await new profileSchema({
           guildId,
           userId,

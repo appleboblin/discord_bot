@@ -23,7 +23,7 @@ const {
   //memberCount,
   //tempMessage,
   animatedEmoji,
-} = require('./function/coolCommands');
+} = require('./features/features/coolCommands');
 const mongo = require('./function/mongo');
 const {
   welcome,

@@ -1,4 +1,5 @@
-const economy = require('../../economy');
+const economy = require('../../features/features/economy');
+const logger = require('../../util/logger');
 
 module.exports = {
   commands: ['balance', 'bal'],

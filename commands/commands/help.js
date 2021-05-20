@@ -1,5 +1,6 @@
-const loadCommands = require('./loadCommands');
-const { prefix } = require('../config.json');
+const loadCommands = require('../loadCommands');
+const { prefix } = require('../../config.json');
+const logger = require('../../util/logger');
 
 module.exports = {
   commands: ['help', 'h'],
@@ -62,7 +63,7 @@ module.exports = {
         value: `${description}`,
       });
     }
-
+    logger.info(`Send ${prefix}help`);
     return message.channel.send(reply);
   },
 };
