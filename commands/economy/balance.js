@@ -12,9 +12,10 @@ module.exports = {
 
     const guildId = message.guild.id;
     const userId = target.id;
+    const userName = target.username;
 
     const coins = await economy.getCoins(guildId, userId);
 
-    message.channel.send(`That user has ${coins} coins!`);
+    message.channel.send(`${userName} has ${coins} coins!`);
   },
 };

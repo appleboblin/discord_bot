@@ -26,13 +26,14 @@ module.exports = {
 
     const guildId = message.guild.id
     const userId = mention.id
-    const userName = mention.tag
+    const userTag = mention.tag
+    const userName = mention.username
 
     const newCoins = await economy.addCoins(guildId, userId, coins)
 
     message.channel.send(
-      `${coins} coins given to <@${userId}>. They now have ${newCoins} coins!`
+      `${coins} coins given to ${userName}. They now have ${newCoins} coins!`
     )
-    logger.info(`${coins} coins given to ${userName}(${userId}).`)
+    logger.info(`${coins} coins given to ${userTag}(${userId}).`)
   },
 }
