@@ -1,36 +1,57 @@
 // Requirements
 const Discord = require('discord.js');
+
 // Set Discord client
 const client = new Discord.Client();
 // require custom files
-const config = require('./config.json');
-const token = require('./token.json');
+const { prefix, discord_bot } = require('./config.json');
 const {
   command,
-  welcomeMessage,
+  firstMessage,
   privateMessage,
   helpCommand,
   reactPhrase,
+  roleClaim,
 } = require('./function/generalCommands');
 const { playMedia, playMusic } = require('./function/mediaPlayer');
-const logger = require('./function/logger');
-const { fetchRecent } = require('./function/fetchRecent');
+const logger = require('./util/logger');
+const {
+  fetchRecent,
+  polls,
+  //welcomeMessage,
+  //memberCount,
+  //tempMessage,
+  animatedEmoji,
+} = require('./function/coolCommands');
+const mongo = require('./util/mongo');
+const {
+  welcome,
+  messageCounter,
+  mute,
+} = require('./function/generalCommandsDatabase');
 
-// increase the limit
-require('events').EventEmitter.defaultMaxListeners = 20;
+// increase event limit
+require('events').EventEmitter.defaultMaxListeners = 30;
 
-// Get prefix from config
-const { prefix } = config;
 // Active when Discord client is ready
 client.on('ready', () => {
+  // Bypass animated emoji nitro
+  command(
+    client,
+    ['WEEEEE', 'BOOBA', 'Wala', 'TriFi', 'wall', 'boomerTUNE'],
+    (message) => {
+      animatedEmoji(message);
+    }
+  );
   // Set bot name
   client.user.setUsername('JoBot');
   logger.info('Bot Name set');
 
   // Commands
   // test message
-  command(client, ['no', 'test'], (message) => {
-    message.channel.send('.test');
+  command(client, [':BOOBA:'], (message) => {
+    message.delete();
+    message.channel.send(`<a:BOOBA:794297593621512192>`);
     logger.info('test');
   });
 
@@ -52,17 +73,13 @@ client.on('ready', () => {
       });
     } else {
       logger.info(
-        message.author.username +
-          '(' +
-          message.author.id +
-          ')' +
-          ` don't have permission`
+        `${message.author.tag}(${message.author.id}) don't have permission`
       );
     }
   });
   // Set bot status
   command(client, 'status', (message) => {
-    const content = message.content.replace(`${prefix}status`, '');
+    const content = message.content.replace(`${prefix}status `, '');
 
     client.user.setPresence({
       status: 'available',
@@ -74,15 +91,15 @@ client.on('ready', () => {
   });
 
   //Private Message
-  privateMessage(client, 'Ding', 'dong');
+  privateMessage(client, 'La', 'Ma');
 
   // React to phrase
-  reactPhrase(client, 'horse girl');
+  reactPhrase(client, 'pew pew');
 
-  // Welcome message
-  welcomeMessage(
+  // First message
+  firstMessage(
     client,
-    '842397223735525407',
+    '842369951826575360',
     'Biggie poopie Jojo\nThis is a message board\nWhat am i doing.... :exploding_head:\nHello Jonai\nNeed to work on message reactions next.\nThis is another new line',
     [
       // emoji reactions
@@ -95,27 +112,16 @@ client.on('ready', () => {
   );
 
   // help
-  helpCommand(client, 'help', (message) => {});
+  helpCommand(client);
 
   // Play Local Media
-  playMedia(client, 'media', (message) => {});
+  playMedia(client);
 
   // Fetch recent message
-  fetchRecent(client, 'fetch', (message) => {});
+  fetchRecent(client);
 
   // Play Music
-  playMusic(client, ['play', 'stop', 'skip'], (message) => {});
-
-  //leave 2
-  command(client, 'leave2', (message) => {
-    if (!message.guild.me.voice.channel) {
-      logger.info('Bot not in voice channel');
-      return message.channel.send('Not in voice channel'); // If the bot is not in a voice channel, then return a message
-    }
-    message.guild.me.voice.channel.leave(); //Leave voice channel
-    logger.info('Booted bot from voice channel.');
-    return;
-  });
+  playMusic(client);
 
   // stupid
   command(client, 'stupid', (message) => {
@@ -125,14 +131,14 @@ client.on('ready', () => {
   // jono
   command(client, 'jono', (message) => {
     message.channel.send(
-      message.author.username + ', Jono agrees that you are stupid'
+      `${message.author.username} , Jono agrees that you are stupid`
     );
   });
 
   // nick
   command(client, 'nick', (message) => {
     message.channel.send(
-      message.member.displayName + ', Jono agrees that you are stupid'
+      `${message.member.displayName} , Jono agrees that you are stupid`
     );
   });
 
@@ -144,25 +150,44 @@ client.on('ready', () => {
   // server info
   command(client, 'serverinfo', (message) => {
     message.channel.send(
-      'Server: ' +
-        message.guild.name +
-        '(' +
-        message.guild.id +
-        '), Channel: <#' +
-        message.channel.id +
-        '>(' +
-        message.channel.id +
-        ')'
+      `Server ${message.guild.name}(${message.guild.id}), Channel: <#${message.channel.id}>(${message.channel.id})`
     );
   });
+
+  // Reaction roles
+  roleClaim(client);
+
+  // Polls
+  polls(client);
+
+  // Welcome message when new user joins
+  //welcomeMessage(client);
+
+  // member count
+  //memberCount(client);
+
+  /*// temp message
+  const guild = client.guilds.cache.get('214357162355326977'); // Target server
+  const channel = guild.channels.cache.get('727736634753155112'); // Target channel
+  command(client, 'tester', (message) => {
+    tempMessage(channel, 'Ring ring ling dong', 3);
+  });*/
+});
+
+// MongoDB commands
+client.on('ready', async () => {
+  console.log('Attempting to connect to mongo');
+  welcome(client);
+  messageCounter(client);
+  mute(client);
 });
 
 // Login Discord
-client.login(token.discord_token);
+client.login(discord_bot);
 
 //Set Status
 client.once('ready', () => {
-  logger.info(`${client.user.username} is up and running.`);
+  logger.info(`${client.user.tag} is up and running.`);
 
   // Set launch status
   client.user.setPresence({
@@ -175,9 +200,15 @@ client.once('ready', () => {
 });
 
 client.once('reconnecting', () => {
-  logger.info(`${client.user.username} is reconnecting.`);
+  logger.info(`${client.user.tag} is reconnecting.`);
 });
 
 client.once('disconnect', () => {
-  logger.info(`${client.user.username} is disconnected.`);
+  logger.info(`${client.user.tag} is disconnected.`);
+});
+
+client.once('error', (err) => {
+  logger.error('Discord client error:', err);
+  client.quit();
+  reject(err);
 });

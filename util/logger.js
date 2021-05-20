@@ -1,4 +1,5 @@
-var winston = require('winston');
+// requirements
+const winston = require('winston');
 require('winston-daily-rotate-file');
 
 // Logging config
@@ -21,4 +22,5 @@ const logConfiguration = {
     )
   ),
 };
+
 module.exports = winston.createLogger(logConfiguration);
