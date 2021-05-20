@@ -15,7 +15,7 @@ const {
   roleClaim,
 } = require('./function/generalCommands');
 const { playMedia, playMusic } = require('./function/mediaPlayer');
-const logger = require('./function/logger');
+const logger = require('./util/logger');
 const {
   fetchRecent,
   polls,
@@ -23,8 +23,8 @@ const {
   //memberCount,
   //tempMessage,
   animatedEmoji,
-} = require('./features/features/coolCommands');
-const mongo = require('./function/mongo');
+} = require('./function/coolCommands');
+const mongo = require('./util/mongo');
 const {
   welcome,
   messageCounter,
@@ -32,7 +32,7 @@ const {
 } = require('./function/generalCommandsDatabase');
 
 // increase event limit
-require('events').EventEmitter.defaultMaxListeners = 20;
+require('events').EventEmitter.defaultMaxListeners = 30;
 
 // Active when Discord client is ready
 client.on('ready', () => {
