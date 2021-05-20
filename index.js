@@ -4,7 +4,8 @@ const Discord = require('discord.js');
 // Set Discord client
 const client = new Discord.Client();
 // require custom files
-const { prefix, discord_bot } = require('./config.json');
+const { prefix } = require('./config.json');
+const token = require('./token.json');
 const {
   command,
   firstMessage,
@@ -44,7 +45,7 @@ client.on('ready', () => {
     }
   );
   // Set bot name
-  client.user.setUsername('JoBot');
+  client.user.setUsername('JoBot_Mini');
   logger.info('Bot Name set');
 
   // Commands
@@ -183,7 +184,7 @@ client.on('ready', async () => {
 });
 
 // Login Discord
-client.login(discord_bot);
+client.login(token.discord_token);
 
 //Set Status
 client.once('ready', () => {
