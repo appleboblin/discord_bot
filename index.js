@@ -62,7 +62,7 @@ client.on('ready', () => {
       message.channel.send(`${guild.name} have ${guild.memberCount} members`);
     });
   });
-
+  /*
   // Clear recent messages of a channel
   command(client, ['cc', 'clearchannel'], (message) => {
     // Check if user have permission
@@ -77,7 +77,7 @@ client.on('ready', () => {
         `${message.author.tag}(${message.author.id}) don't have permission`
       );
     }
-  });
+  });*/
   // Set bot status
   command(client, 'status', (message) => {
     const content = message.content.replace(`${prefix}status `, '');

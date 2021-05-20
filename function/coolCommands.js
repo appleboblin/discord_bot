@@ -51,7 +51,7 @@ const fetchRecent = (client) => {
 const polls = (client) => {
   // Automatic polls for channel
   const channelIds = [
-    '843484482732032020', //polls
+    //'843484482732032020', //polls
   ];
 
   const addReactions = (message) => {

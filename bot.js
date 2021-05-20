@@ -11,13 +11,20 @@ const token = require('./token.json');
 const logger = require('./util/logger');
 const loadCommands = require('./commands/loadCommands');
 const loadFeatures = require('./features/loadFeatures');
+//const phrase = require('./features/features/reactPhrase');
 
 // commands
 client.on('ready', async () => {
   console.log('The client is ready!');
+  // Load commands and features
   loadCommands(client);
   loadFeatures(client);
 });
+/*
+client.on('ready', () => {
+  // React to phrase
+  reactPhrase(client, 'test act');
+});*/
 
 //Login Discord
 client.login(token.discord_token);
