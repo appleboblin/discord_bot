@@ -9,6 +9,8 @@ A bot for Discord
 3. Setup and run [MongoDB](https://docs.mongodb.com/manual/administration/install-community/)
 4. Configure `index.js` and `config.json` as needed, `node index.js` to start
 
+- `bot.js` is using a new command handler, still working in progress. Need to combine `index.js` and `bot.js` together.
+
 # Usage
 
 | Command             | Description                                                                               |

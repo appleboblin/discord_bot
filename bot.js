@@ -30,7 +30,7 @@ client.once('ready', () => {
   client.user.setPresence({
     status: 'available',
     activity: {
-      name: `${prefix}help || New command handler`,
+      name: `${prefix}help for more info`,
       type: 'PLAYING',
     },
   });
