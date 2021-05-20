@@ -1,1 +1,1 @@
-This is a test file of source tree
+Another test of this thing
