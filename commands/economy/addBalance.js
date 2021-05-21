@@ -20,7 +20,7 @@ module.exports = {
 
     const coins = arguments[1]
     if (isNaN(coins)) {
-      message.reply('Please provide a valid number of coins.')
+      message.reply('Please provide a valid number of cock coins.')
       return
     }
 
@@ -32,8 +32,8 @@ module.exports = {
     const newCoins = await economy.addCoins(guildId, userId, coins)
 
     message.channel.send(
-      `${coins} coins given to ${userName}. They now have ${newCoins} coins!`
+      `${coins} coins given to ${userName}. They now have \`${newCoins}\` cock coins!`
     )
-    logger.info(`${coins} coins given to ${userTag}(${userId}).`)
+    logger.info(`\`${coins}\` cock coins given to ${userTag}(${userId}).`)
   },
 }

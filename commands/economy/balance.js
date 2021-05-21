@@ -16,6 +16,6 @@ module.exports = {
 
     const coins = await economy.getCoins(guildId, userId);
 
-    message.channel.send(`${userName} has ${coins} coins!`);
+    message.channel.send(`${userName} has \`${coins}\` cock coins!`);
   },
 };

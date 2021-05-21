@@ -1,10 +1,11 @@
 // requirements
 const mongoose = require('mongoose');
-const { mongoPath } = require('../config.json');
+const { mongoPath } = require('../token.json');
 
 // connects to server
 module.exports = async () => {
   await mongoose.connect(mongoPath, {
+    keepAlive: true,
     useFindAndModify: false,
     useNewUrlParser: true,
     useUnifiedTopology: true,
