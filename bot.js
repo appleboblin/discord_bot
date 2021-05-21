@@ -11,7 +11,7 @@ const token = require('./token.json');
 const logger = require('./util/logger');
 const loadCommands = require('./commands/loadCommands');
 const loadFeatures = require('./features/loadFeatures');
-//const phrase = require('./features/features/reactPhrase');
+const messageCounter = require('./util/messageCount');
 
 // commands
 client.on('ready', async () => {
@@ -19,6 +19,7 @@ client.on('ready', async () => {
   // Load commands and features
   loadCommands(client);
   loadFeatures(client);
+  messageCounter(client);
 });
 /*
 client.on('ready', () => {
