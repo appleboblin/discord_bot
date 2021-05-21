@@ -1,0 +1,25 @@
+{
+  "shop": [
+    {
+      "item": "Normal Box",
+      "price": "100",
+      "test": "hi"
+    },
+    {
+      "item": "Rare Box",
+      "price": "500"
+    },
+    {
+      "item": "Epic Box",
+      "price": "1000"
+    },
+    {
+      "item": "Legendary Box",
+      "price": "2000"
+    },
+    {
+      "item": "Golden Poop",
+      "price": "6969"
+    }
+  ]
+}
