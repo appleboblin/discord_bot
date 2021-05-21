@@ -19,9 +19,6 @@ module.exports = {
           url: 'https://cdn.discordapp.com/attachments/214357162355326977/845321115589017620/laikeidle_0001.png',
         },
         fields: [],
-        image: {
-          url: 'https://cdn.discordapp.com/attachments/214357162355326977/845321443251585034/nagipixel.gif',
-        },
         timestamp: new Date(),
         footer: {
           icon_url:
@@ -36,7 +33,7 @@ module.exports = {
     itemList.shop.map((value, index) => {
       shopMenu.embed.fields.push({
         name: `${value.item}`,
-        value: `Cost: ${value.price} coins`,
+        value: `\`\`\`¢ ${value.price}\`\`\``,
         inline: true,
       });
     });

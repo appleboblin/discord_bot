@@ -21,5 +21,27 @@
       "item": "Golden Poop",
       "price": "6969"
     }
+  ],
+  "items": [
+    {
+      "item": "Common Poop",
+      "weight": "100"
+    },
+    {
+      "item": "Rare Poop",
+      "weight": "50"
+    },
+    {
+      "item": "Epic Poop",
+      "weight": "30"
+    },
+    {
+      "item": "Legendary Poop",
+      "weight": "10"
+    },
+    {
+      "item": "Golden Poop",
+      "weight": "1"
+    }
   ]
 }
