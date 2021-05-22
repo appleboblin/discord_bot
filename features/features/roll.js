@@ -1,4 +1,5 @@
-function rollBox(weight) {
+// Rolling mechanism
+module.exports = (weight, message) => {
   let sum = 0;
   // loop through
   weight.forEach(function (chances) {
@@ -23,15 +24,4 @@ function rollBox(weight) {
   // just incase there are bugs to get out of the loop
   // never reach unless sum of probability less than 1
   return -1;
-}
-
-let items = [
-  'Common Poop',
-  'Rare Poop',
-  'Epic Poop',
-  'Legendary Poop',
-  'Golden Poop',
-];
-let weight = [100, 50, 30, 10, 1];
-
-console.log('Item: ' + items[rollBox(weight)]);
+};
