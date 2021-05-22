@@ -1,7 +1,7 @@
 const mongo = require('../../util/mongo');
 const logger = require('../../util/logger');
-const rollBox = require('../../features/features/roll');
-
+const roll = require('../../features/features/roll');
+const Type = require('../../asset/shop/shopItems.json');
 module.exports = {
   commands: ['roll'],
   description: 'Roll Loot box',
@@ -16,7 +16,10 @@ module.exports = {
       items.push(value.item);
       weight.push(Number(value.weight));
     });
+    console.log(items);
+    console.log(weight);
+    result = roll.rollBox(weight);
 
-    console.log('Item: ' + items[rollBox(weight)]);
+    message.channel.send(`Item: ${items[result]}`);
   },
 };

@@ -1,5 +1,6 @@
+module.exports = (client) => {};
 // Rolling mechanism
-module.exports = (weight, message) => {
+const rollBox = (weight, message) => {
   let sum = 0;
   // loop through
   weight.forEach(function (chances) {
@@ -25,3 +26,4 @@ module.exports = (weight, message) => {
   // never reach unless sum of probability less than 1
   return -1;
 };
+module.exports.rollBox = rollBox;
