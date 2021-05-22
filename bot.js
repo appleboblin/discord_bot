@@ -11,7 +11,6 @@ const token = require('./token.json');
 const logger = require('./util/logger');
 const loadCommands = require('./commands/loadCommands');
 const loadFeatures = require('./features/loadFeatures');
-const messageCounter = require('./util/messageCount');
 const mongo = require('./util/mongo');
 
 // commands
