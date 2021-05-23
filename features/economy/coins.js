@@ -17,6 +17,7 @@ module.exports = (client) => {
 };
 
 const addCoins = async (guildId, userId, coinsToAdd, message) => {
+  //add coins
   const result = await profileSchema.findOneAndUpdate(
     {
       guildId,
