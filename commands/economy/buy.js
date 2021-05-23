@@ -17,10 +17,11 @@ module.exports = {
     const userId = message.author.id;
     const userTag = message.author.tag;
     const userName = message.author.username;
+    const userNickname = message.member.nickname;
     let inventoryMenu = {
       embed: {
         color: 15277667,
-        title: `**${userName}'s Inventory**`,
+        title: `**${userNickname}'s Inventory**`,
         thumbnail: {
           url: 'https://cdn.discordapp.com/attachments/835471079303544834/845921169642618890/Screen_Shot_2021-05-23_at_3.06.38_PM.png',
         },
@@ -46,7 +47,7 @@ module.exports = {
         const pay = await economy.removeCoins(guildId, userId);
         inventoryMenu.embed.footer.text = `Remaining Cock Coins: ${pay}`;
         // prepare result for menu
-        const inventory = totalBox.replace(',', '\n').replace(/[:]/g, ': ');
+        const inventory = totalBox.replace(/[,]/g, '\n').replace(/[:]/g, ': ');
         // send info to menu
         inventoryMenu.embed.fields.push({
           name: `**Boxes**`,

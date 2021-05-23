@@ -24,7 +24,9 @@ module.exports = {
       // get selected item
       result = roll.rollBox(weight);
       // send item message
-      return message.channel.send(`Item: ${items[result]}`);
+      itemsResult = items[result];
+      trimmed = itemsResult.replace(/([A-Z])/g, ' $1').trim();
+      return message.channel.send(`Item: ${trimmed}`);
     }
     // check if matches
     if (args == 'rare') {
@@ -39,7 +41,26 @@ module.exports = {
       // get selected item
       result = roll.rollBox(weight);
       // send item message
-      return message.channel.send(`Item: ${items[result]}`);
+      itemsResult = items[result];
+      trimmed = itemsResult.replace(/([A-Z])/g, ' $1').trim();
+      return message.channel.send(`Item: ${trimmed}`);
+    }
+    // check if matches
+    if (args == 'epic') {
+      // load values
+      let boxType = Type.BoxType.epic;
+      // get values of each item
+      boxType.map((value, index) => {
+        // push into empty array
+        items.push(value.item);
+        weight.push(Number(value.weight));
+      });
+      // get selected item
+      result = roll.rollBox(weight);
+      // send item message
+      itemsResult = items[result];
+      trimmed = itemsResult.replace(/([A-Z])/g, ' $1').trim();
+      return message.channel.send(`Item: ${trimmed}`);
     }
     message.channel.send(`Please choose either \`normal\` or \`rare\`.`);
   },

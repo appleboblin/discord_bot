@@ -26,7 +26,7 @@ module.exports = {
     const guildId = message.guild.id;
     const userId = mention.id;
     const userTag = mention.tag;
-    const userName = mention.username;
+    const userName = message.mentions.members.first().nickname;
 
     const newCoins = await economy.addCoins(guildId, userId, coins);
 

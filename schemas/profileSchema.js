@@ -29,6 +29,10 @@ const profileSchema = mongoose.Schema({
       type: Number,
       default: 0,
     },
+    Epic: {
+      type: Number,
+      default: 0,
+    },
   },
 });
 
