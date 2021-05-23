@@ -1,6 +1,7 @@
 const logger = require('../../util/logger');
 const shopItems = require('../../asset/shop/shopItems.json');
-const purchase = require('../../features/features/purchase');
+const purchase = require('../../features/economy/purchaseBox');
+const economy = require('../../features/economy/economy');
 
 module.exports = {
   commands: 'buy',
@@ -26,16 +27,12 @@ module.exports = {
         fields: [],
       },
     };
-
     if (shopItems.BoxType.length === 0)
       return message.channel.send('No boxes available');
-    console.log(shopItems.BoxType);
     let boxList = Object.keys(shopItems.BoxType);
-    console.log(boxList);
-    console.log(args);
     if (boxList.includes(args.toString())) {
       const totalBox = await purchase.addBox(guildId, userId, args);
-      const inventory = totalBox.replace(':', ': ').replace(',', '\n');
+      const inventory = totalBox.replace(',', '\n').replace(/[:]/g, ': ');
       inventoryMenu.embed.fields.push({
         name: `**Boxes**`,
         value: `\`\`\`${inventory}\`\`\``,
@@ -46,5 +43,35 @@ module.exports = {
     } else {
       message.channel.send('Invalid box type!');
     }
+    /*
+    const buyBox = async () => {
+      if (shopItems.BoxType.length === 0)
+        return message.channel.send('No boxes available');
+      let boxList = Object.keys(shopItems.BoxType);
+      if (boxList.includes(args.toString())) {
+        const totalBox = await purchase.addBox(guildId, userId, args);
+        const inventory = totalBox.replace(',', '\n').replace(/[:]/g, ': ');
+        inventoryMenu.embed.fields.push({
+          name: `**Boxes**`,
+          value: `\`\`\`${inventory}\`\`\``,
+          inline: true,
+        });
+
+        message.channel.send(inventoryMenu);
+      } else {
+        message.channel.send('Invalid box type!');
+      }
+    };
+    //let hi = await purchase.getBox(guildId, userId, args);
+    //console.log(hi);
+    const check = await economy.checkBalance(guildId, userId, args);
+    if (check == 1) {
+      console.log('enough');
+      buyBox();
+    } else if (check == 0) {
+      console.log('not enough');
+    } else {
+      console.log('failed');
+    }*/
   },
 };

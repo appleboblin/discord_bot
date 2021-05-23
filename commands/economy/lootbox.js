@@ -1,6 +1,6 @@
 const mongo = require('../../util/mongo');
 const logger = require('../../util/logger');
-const roll = require('../../features/features/roll');
+const roll = require('../../features/economy/rollBox');
 const Type = require('../../asset/shop/shopItems.json');
 module.exports = {
   commands: ['roll'],

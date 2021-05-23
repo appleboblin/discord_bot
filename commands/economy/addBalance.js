@@ -1,4 +1,4 @@
-const economy = require('../../features/features/economy');
+const economy = require('../../features/economy/economy');
 const logger = require('../../util/logger');
 
 module.exports = {

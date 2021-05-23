@@ -21,11 +21,11 @@ const profileSchema = mongoose.Schema({
     default: 1,
   },
   boxes: {
-    normal: {
+    Normal: {
       type: Number,
       default: 0,
     },
-    rare: {
+    Rare: {
       type: Number,
       default: 0,
     },
