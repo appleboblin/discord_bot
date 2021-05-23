@@ -26,5 +26,3 @@ module.exports = (client) => {
   logger.info('Loading Features');
   readFeatures('.');
 };
-
-// repo test
