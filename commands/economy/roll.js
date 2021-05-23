@@ -4,8 +4,9 @@ const roll = require('../../features/economy/rollBox');
 const Type = require('../../asset/shop/shopItems.json');
 module.exports = {
   commands: ['roll'],
-  description: 'Roll Loot box',
-  //minArgs: 0,
+  description: 'Roll Loot Box',
+  expectedArgs: '<box>',
+  minArgs: 1,
   maxArgs: 1,
   callback: async (message, chosenBox) => {
     //set empty array
