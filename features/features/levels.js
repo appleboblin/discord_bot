@@ -4,6 +4,7 @@ const logger = require('../../util/logger');
 
 module.exports = (client) => {
   client.on('message', async (message) => {
+    if (message.author.bot) return;
     const { guild, member } = message;
     // random XP
     const randomXp = (min, max) => {

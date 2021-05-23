@@ -1,6 +1,6 @@
 const logger = require('../../util/logger');
 const itemList = require('../../asset/shop/shopItems.json');
-const Type = require('../../asset/shop/shopItems.json');
+
 module.exports = {
   commands: ['shop'],
   //maxArgs: 0,

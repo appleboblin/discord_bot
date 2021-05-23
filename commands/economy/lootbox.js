@@ -7,11 +7,11 @@ module.exports = {
   description: 'Roll Loot box',
   //minArgs: 0,
   maxArgs: 1,
-  callback: (message, argument) => {
+  callback: (message, args) => {
     let items = [];
     let weight = [];
-    if (argument == 'normal') {
-      let boxType = Type.BoxType.normalBox;
+    if (args == 'normal') {
+      let boxType = Type.BoxType.normal;
       boxType.map((value, index) => {
         items.push(value.item);
         weight.push(Number(value.weight));
@@ -19,8 +19,8 @@ module.exports = {
       result = roll.rollBox(weight);
       return message.channel.send(`Item: ${items[result]}`);
     }
-    if (argument == 'rare') {
-      let boxType = Type.BoxType.rareBox;
+    if (args == 'rare') {
+      let boxType = Type.BoxType.rare;
       boxType.map((value, index) => {
         items.push(value.item);
         weight.push(Number(value.weight));
