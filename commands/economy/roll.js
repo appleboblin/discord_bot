@@ -12,7 +12,7 @@ module.exports = {
     //set empty array
     let items = [];
     let weight = [];
-    invalidBox = [];
+    let invalidBox = [];
     let result = 0;
     BoxList = Object.keys(Type.BoxType);
     BoxList.map((value) => {
