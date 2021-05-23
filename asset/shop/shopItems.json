@@ -28,46 +28,236 @@
   "BoxType": {
     "normal": [
       {
-        "item": "Common Poop",
-        "weight": "100"
-      },
-      {
-        "item": "Rare Poop",
-        "weight": "50"
-      },
-      {
-        "item": "Epic Poop",
-        "weight": "30"
-      },
-      {
-        "item": "Legendary Poop",
+        "item": "GreatSword",
         "weight": "10"
       },
       {
-        "item": "Golden Poop",
-        "weight": "1"
+        "item": "LongSword",
+        "weight": "10"
+      },
+      {
+        "item": "SwordAndShield",
+        "weight": "10"
+      },
+      {
+        "item": "DualBlades",
+        "weight": "10"
+      },
+      {
+        "item": "Hammer",
+        "weight": "10"
+      },
+      {
+        "item": "HuntingHorn",
+        "weight": "5"
+      },
+      {
+        "item": "Lance",
+        "weight": "10"
+      },
+      {
+        "item": "GunLance",
+        "weight": "10"
+      },
+      {
+        "item": "SwitchAxe",
+        "weight": "10"
+      },
+      {
+        "item": "ChargeAxe",
+        "weight": "10"
+      },
+      {
+        "item": "Bow",
+        "weight": "10"
+      },
+      {
+        "item": "InsectGlaive",
+        "weight": "10"
+      },
+      {
+        "item": "LightBowGun",
+        "weight": "10"
+      },
+      {
+        "item": "HeavyBowGun",
+        "weight": "10"
       }
     ],
     "rare": [
       {
-        "item": "Stick",
-        "weight": "90"
+        "item": "Chameleos",
+        "weight": "10"
       },
       {
-        "item": "Shovel",
-        "weight": "70"
+        "item": "Teostra",
+        "weight": "10"
       },
       {
-        "item": "Axe",
-        "weight": "40"
+        "item": "KushalaDaora",
+        "weight": "10"
       },
       {
-        "item": "Pickaxe",
-        "weight": "15"
+        "item": "APEXDiablos",
+        "weight": "10"
       },
       {
-        "item": "Sword",
-        "weight": "5"
+        "item": "APEXArzuros",
+        "weight": "10"
+      },
+      {
+        "item": "APEXRathian",
+        "weight": "10"
+      },
+      {
+        "item": "APEXMizutsune",
+        "weight": "10"
+      },
+      {
+        "item": "Bazelgeuse",
+        "weight": "10"
+      },
+      {
+        "item": "Magnamalo",
+        "weight": "10"
+      },
+      {
+        "item": "GossHarag",
+        "weight": "10"
+      },
+      {
+        "item": "Armudron",
+        "weight": "10"
+      },
+      {
+        "item": "Rajang",
+        "weight": "10"
+      },
+      {
+        "item": "Narwa",
+        "weight": "10"
+      },
+      {
+        "item": "Ibushi",
+        "weight": "10"
+      }
+    ],
+    "epic": [
+      {
+        "item": "Arknosom",
+        "weight": "10"
+      },
+      {
+        "item": "BellyFrogGuy?",
+        "weight": "10"
+      },
+      {
+        "item": "GreatIzuchi",
+        "weight": "10"
+      },
+      {
+        "item": "Arzuros",
+        "weight": "10"
+      },
+      {
+        "item": "RaknaKadaki",
+        "weight": "10"
+      },
+      {
+        "item": "Bishaten",
+        "weight": "10"
+      },
+      {
+        "item": "Somnakath",
+        "weight": "10"
+      },
+      {
+        "item": "TobiKadachi",
+        "weight": "10"
+      },
+      {
+        "item": "GreatWroggii",
+        "weight": "10"
+      },
+      {
+        "item": "GoldenLudroth",
+        "weight": "10"
+      },
+      {
+        "item": "PukeiPukei",
+        "weight": "10"
+      },
+      {
+        "item": "KuluYaku",
+        "weight": "10"
+      },
+      {
+        "item": "Anjanath",
+        "weight": "10"
+      },
+      {
+        "item": "Rathaloso",
+        "weight": "10"
+      },
+      {
+        "item": "Rathian",
+        "weight": "10"
+      },
+      {
+        "item": "Jyuratodos",
+        "weight": "10"
+      },
+      {
+        "item": "TentacleHeadMonster",
+        "weight": "10"
+      },
+      {
+        "item": "Barsarios",
+        "weight": "10"
+      },
+      {
+        "item": "Mizutsune",
+        "weight": "10"
+      },
+      {
+        "item": "Rabbit",
+        "weight": "10"
+      },
+      {
+        "item": "Barioth",
+        "weight": "10"
+      },
+      {
+        "item": "TigreX",
+        "weight": "10"
+      },
+      {
+        "item": "GreatBaggi",
+        "weight": "10"
+      },
+      {
+        "item": "Zinogre",
+        "weight": "10"
+      },
+      {
+        "item": "Diablos",
+        "weight": "10"
+      },
+      {
+        "item": "RedBullRoleyPoley",
+        "weight": "10"
+      },
+      {
+        "item": "Nargacuga",
+        "weight": "10"
+      },
+      {
+        "item": "Barroth",
+        "weight": "10"
+      },
+      {
+        "item": "APEXRathalos",
+        "weight": "10"
       }
     ]
   }
