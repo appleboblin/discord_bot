@@ -20,6 +20,16 @@ const profileSchema = mongoose.Schema({
     type: Number,
     default: 1,
   },
+  boxes: {
+    normal: {
+      type: Number,
+      default: 0,
+    },
+    rare: {
+      type: Number,
+      default: 0,
+    },
+  },
 });
 
 module.exports = mongoose.model('profiles', profileSchema);

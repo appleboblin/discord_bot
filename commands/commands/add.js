@@ -5,6 +5,8 @@ module.exports = {
     permissionError: 'You need administrator permission to run this command',
     minArgs: 2,
     maxArgs: 2,
+    //permissions: ['SEND_MESSAGES'],
+    //requiredRoles: [`test`],
     callback: (message, arguments, text)=> {
         // addition
         const num1 = +arguments[0]
@@ -12,6 +14,4 @@ module.exports = {
     
         message.channel.send(`The sum is ${num1 + num2}`)
     },
-    //permissions: ['SEND_MESSAGES'],
-    //requiredRoles: [`test`],
 }

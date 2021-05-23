@@ -11,14 +11,14 @@ const rollBox = (weight, message) => {
   let random = Math.random();
   let chances = 0;
   // if percent less than
-  for (let percent = 0; percent < weight.length; percent++) {
+  for (let result = 0; result < weight.length; result++) {
     // chance add weight of each item
     // selected by random
-    chances += weight[percent] / sum;
+    chances += weight[result] / sum;
     // if random number generated is less than chance
     if (random < chances) {
       // return the reward base on order in array
-      return percent;
+      return result;
     }
   }
   // only needed if some weight is 0 or negative

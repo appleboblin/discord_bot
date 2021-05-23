@@ -47,6 +47,28 @@
         "item": "Golden Poop",
         "weight": "1"
       }
+    ],
+    "rareBox": [
+      {
+        "item": "Stick",
+        "weight": "90"
+      },
+      {
+        "item": "Shovel",
+        "weight": "70"
+      },
+      {
+        "item": "Axe",
+        "weight": "40"
+      },
+      {
+        "item": "Pickaxe",
+        "weight": "15"
+      },
+      {
+        "item": "Sword",
+        "weight": "5"
+      }
     ]
   }
 }
