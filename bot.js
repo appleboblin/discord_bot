@@ -6,9 +6,9 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 // requirements
-const { prefix, discord_token } = require('./config.json');
-//const { prefix } = require('./config.json');
-//const token = require('./token.json');
+//const { prefix, discord_token } = require('./config.json');
+const { prefix } = require('./config.json');
+const token = require('./token.json');
 const logger = require('./util/logger');
 const loadCommands = require('./commands/loadCommands');
 const loadFeatures = require('./features/loadFeatures');
@@ -29,9 +29,8 @@ client.on('ready', async () => {
 });
 
 //Login Discord
-//client.login(token.discord_token);
-client.login(discord_token);
-
+client.login(token.discord_token);
+//client.login(discord_token);
 //Set Status
 client.once('ready', () => {
   logger.info(`${client.user.tag} is starting up...`);

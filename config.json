@@ -1,5 +1,5 @@
 {
-  "prefix": "./",
+  "prefix": ".",
   "discord_token": "token goes here",
   "mongoPath": "mongodb://localhost:27017/discordbot",
   "redisPath": "//endpoint?password=pass",
