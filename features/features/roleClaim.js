@@ -1,7 +1,7 @@
 const logger = require('../../util/logger');
 const firstMessage = require('../../util/firstMessage');
 //modules.export
-module.exports = (client) => {
+module.exports = async (client) => {
   // Set role channel
   const channelId = '843147115584684073';
 
@@ -26,7 +26,7 @@ module.exports = (client) => {
     emojiText += `${emoji} = ${role}\n`;
   }
   // Using firstMessage function
-  firstMessage(client, channelId, emojiText, reactions);
+  await firstMessage(client, channelId, emojiText, reactions);
   logger.info('Set reaction roles');
   // Handel reactions to add roles
   const handleReaction = (reaction, user, add) => {

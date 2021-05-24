@@ -15,12 +15,13 @@ const mongo = require('./util/mongo');
 
 // commands
 client.on('ready', async () => {
-  console.log('The client is ready!');
-
+  logger.info('Loading...');
+  // wait for mongo DB connection
   await mongo();
   // Load commands and features
-  loadCommands(client);
-  loadFeatures(client);
+  await loadCommands(client);
+  await loadFeatures(client);
+  logger.info('Done Loading!');
 });
 /*
 client.on('ready', () => {
@@ -33,7 +34,7 @@ client.login(token.discord_token);
 
 //Set Status
 client.once('ready', () => {
-  logger.info(`${client.user.tag} is up and running.`);
+  logger.info(`${client.user.tag} is starting up...`);
 
   // Set launch status
   client.user.setPresence({
