@@ -1,8 +1,6 @@
 const logger = require('../../util/logger');
 const trigger = require('../../config.json');
 
-module.exports = (client) => {};
-
 module.exports = (client) => {
   client.on('message', (message) => {
     if (
