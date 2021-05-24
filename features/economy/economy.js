@@ -4,6 +4,7 @@ const logger = require('../../util/logger');
 const itemList = require('../../asset/shop/shopItems.json');
 
 const coinsCache = {}; // { 'guildId-userId': coins }
+const boxCache = {}; // { 'guildId-userId': boxType }
 
 module.exports = (client) => {};
 
@@ -85,7 +86,7 @@ module.exports.checkBalance = async (guildId, userId, boxToCheck) => {
   itemList.shop.BoxType.map((value, index) => {
     if (
       // check if its the selected box and have enough coins
-      value.item.toLowerCase().includes(boxToCheck) &&
+      value.item.toString().toLowerCase().includes(boxToCheck) &&
       coins - value.price >= 0
     ) {
       // true
@@ -100,7 +101,7 @@ module.exports.checkBalance = async (guildId, userId, boxToCheck) => {
   return result;
 };
 
-const removeCoins = async (guildId, userId) => {
+const removeCoins = async (guildId, userId, boxToCheck) => {
   // get remaining coins
   const remainingCoin = await getCoins(guildId, userId);
   // take away coins needed to buy, note - before boxPrice
@@ -109,3 +110,120 @@ const removeCoins = async (guildId, userId) => {
   return result;
 };
 module.exports.removeCoins = removeCoins;
+
+module.exports.addBox = async (guildId, userId, boxToAdd) => {
+  //logger.info('Running findOneAndUpdate()');
+  let type =
+    // Convert first character to capital
+    boxToAdd.toString().charAt(0).toUpperCase() + boxToAdd.toString().slice(1);
+  let box = `boxes.${type}`;
+  // add box
+  const result = await profileSchema.findOneAndUpdate(
+    {
+      guildId,
+      userId,
+    },
+    {
+      guildId,
+      userId,
+      $inc: {
+        [box]: 1,
+      },
+    },
+    {
+      upsert: true,
+      new: true,
+    }
+  );
+  // make string look presentable
+  let total = JSON.stringify(result._doc.boxes);
+  // using regular expression
+  let inventory = total.replace(/[^:,0-9a-zA-Z]/g, '');
+  logger.info(
+    `RESULT: guildId: ${result._doc.guildId}, userId: ${result._doc.userId}, box: ${inventory}`
+  );
+  // caching
+  boxCache[`${guildId}-${userId}`] = result._doc.boxes;
+
+  return inventory;
+};
+
+module.exports.getBox = async (guildId, userId, boxToCheck) => {
+  // look from cache
+  const cachedValue = boxCache[`${guildId}-${userId}`];
+  if (cachedValue) {
+    return cachedValue;
+  }
+  //logger.info('Running findOne()');
+  let boxList = itemList.BoxType;
+  let type =
+    // Convert first character to capital
+    boxToCheck.toString().charAt(0).toUpperCase() +
+    boxToCheck.toString().slice(1);
+  let box = `boxes.${type}`;
+  const result = await profileSchema.findOne({
+    guildId,
+    userId,
+  });
+  // make string look presentable
+  let total = JSON.stringify(result._doc.boxes);
+  // using regular expression
+  let inventory = total.replace(/[^:,0-9a-zA-Z]/g, '');
+  logger.info(
+    `RESULT: guildId: ${result._doc.guildId}, userId: ${result._doc.userId}, box: ${inventory}`
+  );
+
+  let coins = 0;
+  // get result
+  if (result) {
+    coins = result.coins;
+  } else {
+    logger.info('Inserting a document');
+    await new profileSchema({
+      guildId,
+      userId,
+      coins,
+    }).save();
+  }
+  // caching
+  boxCache[`${guildId}-${userId}`] = result._doc.boxes;
+
+  return result._doc.boxes;
+};
+
+module.exports.removeBox = async (guildId, userId, boxToAdd) => {
+  //logger.info('Running findOneAndUpdate()');
+  let type =
+    // Convert first character to capital
+    boxToAdd.toString().charAt(0).toUpperCase() + boxToAdd.toString().slice(1);
+  let box = `boxes.${type}`;
+  // add box
+  const result = await profileSchema.findOneAndUpdate(
+    {
+      guildId,
+      userId,
+    },
+    {
+      guildId,
+      userId,
+      $inc: {
+        [box]: -1,
+      },
+    },
+    {
+      upsert: true,
+      new: true,
+    }
+  );
+  // make string look presentable
+  let total = JSON.stringify(result._doc.boxes);
+  // using regular expression
+  let inventory = total.replace(/[^:,0-9a-zA-Z]/g, '');
+  logger.info(
+    `RESULT: guildId: ${result._doc.guildId}, userId: ${result._doc.userId}, box: ${inventory}`
+  );
+  // caching
+  boxCache[`${guildId}-${userId}`] = result._doc.boxes;
+
+  return inventory;
+};

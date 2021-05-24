@@ -1,6 +1,5 @@
 const logger = require('../../util/logger');
 const shopItems = require('../../asset/shop/shopItems.json');
-const purchase = require('../../features/economy/purchaseBox');
 const economy = require('../../features/economy/economy');
 
 module.exports = {
@@ -34,15 +33,37 @@ module.exports = {
       },
     };
 
-    const buyBox = async () => {
-      // check if BoxType is empty
-      if (shopItems.BoxType.length === 0)
-        return message.channel.send('No boxes available');
-      let boxList = Object.keys(shopItems.BoxType);
-      //check if box type matches any in json
-      if (boxList.includes(args.toString())) {
+    let invalidBox = [];
+
+    let result = 0;
+    BoxList = Object.keys(shopItems.BoxType);
+    BoxList.map((value) => {
+      invalidBox.push(value);
+      if (
+        // check if its the box selected is in list
+        value.toString().toLowerCase() == args.toString().toLowerCase()
+      ) {
+        // true
+        result += 1;
+      } else {
+        // false
+        result += 0;
+      }
+    });
+    // check if BoxType is empty
+    if (shopItems.BoxType.length === 0)
+      return message.channel.send('No boxes available');
+    let boxList = Object.keys(shopItems.BoxType);
+    //check if box type matches any in json
+    if (result == 1) {
+      let bal = args.toString().toLowerCase();
+      // check if user have enough balance
+      const check = await economy.checkBalance(guildId, userId, bal);
+      // if enough balance, buy
+      if (check === 1) {
         // increase box count
-        const totalBox = await purchase.addBox(guildId, userId, args);
+        let addBox = bal.replace(/\b\w/g, (l) => l.toUpperCase());
+        const totalBox = await economy.addBox(guildId, userId, addBox);
         // take away coins needed
         const pay = await economy.removeCoins(guildId, userId);
         inventoryMenu.embed.footer.text = `Remaining Cock Coins: ${pay}`;
@@ -56,22 +77,16 @@ module.exports = {
         });
         // send menu to channel
         message.channel.send(inventoryMenu);
+        // if not enough balance, prompt the user
+      } else if (check === 0) {
+        message.channel.send(`You don't have enough Cock Coins!`);
+        // error handling
       } else {
-        message.channel.send('Invalid box type!');
+        logger.error('failed');
+        message.send('Something went wrong');
       }
-    };
-    // check if user have enough balance
-    const check = await economy.checkBalance(guildId, userId, args);
-    // if enough balance, buy
-    if (check == 1) {
-      buyBox();
-      // if not enough balance, prompt the user
-    } else if (check == 0) {
-      message.channel.send(`You don't have enough Cock Coins!`);
-      // error handling
     } else {
-      logger.error('failed');
-      message.send('Something went wrong');
+      message.channel.send('Invalid box type!');
     }
   },
 };
