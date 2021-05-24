@@ -148,19 +148,14 @@ module.exports.addBox = async (guildId, userId, boxToAdd) => {
   return inventory;
 };
 
-module.exports.getBox = async (guildId, userId, boxToCheck) => {
+module.exports.getBox = async (guildId, userId) => {
   // look from cache
   const cachedValue = boxCache[`${guildId}-${userId}`];
   if (cachedValue) {
     return cachedValue;
   }
   //logger.info('Running findOne()');
-  let boxList = itemList.BoxType;
-  let type =
-    // Convert first character to capital
-    boxToCheck.toString().charAt(0).toUpperCase() +
-    boxToCheck.toString().slice(1);
-  let box = `boxes.${type}`;
+
   const result = await profileSchema.findOne({
     guildId,
     userId,

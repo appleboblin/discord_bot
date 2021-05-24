@@ -43,7 +43,7 @@ module.exports = {
       }
     });
 
-    let check = await economy.getBox(guildId, userId, chosenBox);
+    let check = await economy.getBox(guildId, userId);
     //console.log(check);
     //console.log(type);
     //console.log(Type.BoxType[allLower]);
