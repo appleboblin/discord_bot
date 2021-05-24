@@ -5,7 +5,7 @@ const economy = require('../../features/economy/economy');
 module.exports = {
   commands: 'buy',
   description: 'Buy Loot Box',
-  expectedArgs: '<rarity> `normal`, `rare`',
+  expectedArgs: '<rarity>',
   minArgs: 1,
   maxArgs: 1,
   //requiredRoles: [`test`],
