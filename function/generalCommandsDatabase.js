@@ -1,6 +1,6 @@
 // requirements
 const mongo = require('../util/mongo');
-const { command } = require('./generalCommands');
+const { command } = require('../features/features/generalCommands');
 const welcomeSchema = require('../schemas/welcomeSchema');
 const messageCountSchema = require('../schemas/messageCountSchema');
 const logger = require('../util/logger');

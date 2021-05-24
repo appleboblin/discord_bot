@@ -1,5 +1,6 @@
 const logger = require('../../util/logger');
 const itemList = require('../../asset/shop/shopItems.json');
+
 module.exports = {
   commands: ['shop'],
   //maxArgs: 0,
@@ -27,10 +28,10 @@ module.exports = {
         },
       },
     };
-    if (itemList.shop.length === 0)
+    if (itemList.shop.BoxType.length === 0)
       return message.channel.send('No items in shop.');
 
-    itemList.shop.map((value, index) => {
+    itemList.shop.BoxType.map((value, index) => {
       shopMenu.embed.fields.push({
         name: `${value.item}`,
         value: `\`\`\`¢ ${value.price}\`\`\``,

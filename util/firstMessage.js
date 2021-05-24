@@ -1,5 +1,5 @@
 const logger = require('./logger');
-const addReactions = (message, reactions) => {
+const addReactions = async (message, reactions) => {
   //remove 0 index
   message.react(reactions[0]);
   //move everything to the left
@@ -15,7 +15,7 @@ module.exports = async (client, id, text, reactions = []) => {
   const channel = await client.channels.fetch(id);
   // Check if channel is still there
   if (!channel) {
-    console.log('Unknown channel ' + id);
+    logger.error('Unknown channel ' + id);
     return;
   }
 
@@ -26,6 +26,7 @@ module.exports = async (client, id, text, reactions = []) => {
       channel.send(text).then((message) => {
         addReactions(message, reactions);
       });
+      return;
     } else {
       // Edit message
       for (const message of messages) {
@@ -35,6 +36,7 @@ module.exports = async (client, id, text, reactions = []) => {
         addReactions(message[1], reactions);
         logger.info('Set message and reactions');
       }
+      return;
     }
   });
 };

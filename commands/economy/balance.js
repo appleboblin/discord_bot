@@ -1,11 +1,11 @@
-const economy = require('../../features/features/economy');
+const economy = require('../../features/economy/economy');
 const logger = require('../../util/logger');
 
 module.exports = {
   commands: ['balance', 'bal'],
   maxArgs: 1,
   description: 'Balance check',
-  expectedArgs: '[Target @]',
+  expectedArgs: '<Target @>',
   callback: async (message) => {
     const target = message.mentions.users.first() || message.author;
     const targetId = target.id;

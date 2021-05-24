@@ -7,19 +7,24 @@ const client = new Discord.Client();
 
 // requirements
 const { prefix, discord_token } = require('./config.json');
+
 const logger = require('./util/logger');
 const loadCommands = require('./commands/loadCommands');
 const loadFeatures = require('./features/loadFeatures');
 const mongo = require('./util/mongo');
-
+const { playMusic } = require('./util/mediaPlayer');
+const twt = require('./util/twitter-hotfix.js');
 // commands
 client.on('ready', async () => {
-  console.log('The client is ready!');
-
+  logger.info('Loading...');
+  // wait for mongo DB connection
   await mongo();
   // Load commands and features
-  loadCommands(client);
-  loadFeatures(client);
+  await loadCommands(client);
+  await loadFeatures(client);
+  playMusic(client);
+  twt.checkNewUrl(client);
+  logger.info('Done Loading!');
 });
 /*
 client.on('ready', () => {
@@ -28,11 +33,12 @@ client.on('ready', () => {
 });*/
 
 //Login Discord
+
 client.login(discord_token);
 
 //Set Status
 client.once('ready', () => {
-  logger.info(`${client.user.tag} is up and running.`);
+  logger.info(`${client.user.tag} is starting up...`);
 
   // Set launch status
   client.user.setPresence({

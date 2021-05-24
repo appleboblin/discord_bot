@@ -52,7 +52,6 @@ module.exports = (commandOptions) => {
   // Make sure commands and aliases are in array
   if (typeof commands === 'string') {
     commands = [commands];
-
   }
 
   logger.info(`Found command "${commands[0]}"`);
@@ -80,9 +79,9 @@ module.exports.listen = (client) => {
   client.on('message', (message) => {
     const { member, content, guild } = message;
     // Split on spaces
-    const arguments = content.split(/[ ]+/); // Doesn't matter how many spaces user add
+    const args = content.split(/[ ]+/); // Doesn't matter how many spaces user add
     // remove command, first index [0]
-    const name = arguments.shift().toLowerCase();
+    const name = args.shift().toLowerCase();
     if (name.startsWith(prefix)) {
       const command = allCommands[name.replace(prefix, ``)];
       if (!command) {
@@ -113,22 +112,24 @@ module.exports.listen = (client) => {
         );
 
         if (!role || !member.roles.cache.has(role.id)) {
-          message.channel.send(`You need "${requiredRole}" to use this command.`);
+          message.channel.send(
+            `You need "${requiredRole}" to use this command.`
+          );
           return;
         }
       }
 
       // check amount of arguments
       if (
-        arguments.length < minArgs ||
-        (maxArgs !== null && arguments.length > maxArgs)
+        args.length < minArgs ||
+        (maxArgs !== null && args.length > maxArgs)
       ) {
         message.channel.send(`Invalid syntax. Use ${name} ${expectedArgs}`);
         return;
       }
 
       // handel custom commands
-      callback(message, arguments, arguments.join(' '), client);
+      callback(message, args, args.join(' '), client);
     }
   });
 };

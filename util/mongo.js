@@ -1,6 +1,5 @@
 // requirements
 const mongoose = require('mongoose');
-const { mongoPath } = require('../config.json');
 
 // connects to server
 module.exports = async () => {

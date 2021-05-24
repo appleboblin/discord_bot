@@ -4,6 +4,7 @@ const logger = require('../../util/logger');
 
 module.exports = (client) => {
   client.on('message', async (message) => {
+    if (message.author.bot) return;
     const { guild, member } = message;
     // random Coins
     const randomCoins = (min, max) => {
@@ -16,6 +17,7 @@ module.exports = (client) => {
 };
 
 const addCoins = async (guildId, userId, coinsToAdd, message) => {
+  //add coins
   const result = await profileSchema.findOneAndUpdate(
     {
       guildId,

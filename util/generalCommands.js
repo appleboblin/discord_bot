@@ -1,5 +1,5 @@
 // call logger
-const logger = require('../util/logger');
+const logger = require('./logger');
 
 // Destructure prefix
 const { prefix } = require('../config.json');
@@ -18,7 +18,7 @@ function reactPhrase(client, triggerText) {
     }
   });
 }
-/*
+
 const command = (client, aliases, callback) => {
   // make things into array
   if (typeof aliases === 'string') {
@@ -152,7 +152,7 @@ async function firstMessage(client, id, text, reactions = []) {
       }
     }
   });
-}*/
+}
 
 // Private message
 function privateMessage(client, triggerText, replyText) {

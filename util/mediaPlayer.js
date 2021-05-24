@@ -1,5 +1,5 @@
 // call logger
-const logger = require('../util/logger');
+const logger = require('./logger');
 
 // Destructure prefix
 const { prefix } = require('../config.json');
