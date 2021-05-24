@@ -5,9 +5,9 @@ const logger = require('../../util/logger');
 module.exports = {
   commands: ['help', 'h'],
   description: 'Lists all commands',
-  expectedArgs: '<media>/<list>',
-  minArgs: 1,
-  maxArgs: 1,
+  //expectedArgs: '<media>/<list>',
+  minArgs: 0,
+  maxArgs: 0,
   //requiredRoles: [`test`],
   //permissions: ['SEND_MESSAGES'],
   //permissionError = 'You do not have permission to run this command.',
