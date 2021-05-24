@@ -2,5 +2,6 @@
   "prefix": ".",
   "discord_token": "token goes here",
   "mongoPath": "mongodb://localhost:27017/discordbot",
-  "redisPath": "//endpoint?password=pass"
+  "redisPath": "//endpoint?password=pass",
+  "triggerText": "testing"
 }
