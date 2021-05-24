@@ -12,7 +12,8 @@ const logger = require('./util/logger');
 const loadCommands = require('./commands/loadCommands');
 const loadFeatures = require('./features/loadFeatures');
 const mongo = require('./util/mongo');
-
+const { playMusic } = require('./util/mediaPlayer');
+const twt = require('./util/twitter-hotfix.js');
 // commands
 client.on('ready', async () => {
   logger.info('Loading...');
@@ -21,6 +22,8 @@ client.on('ready', async () => {
   // Load commands and features
   await loadCommands(client);
   await loadFeatures(client);
+  playMusic(client);
+  twt.checkNewUrl(client);
   logger.info('Done Loading!');
 });
 /*
