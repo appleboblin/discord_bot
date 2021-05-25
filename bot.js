@@ -24,7 +24,7 @@ client.on('ready', async () => {
   await loadCommands(client);
   await loadFeatures(client);
   playMusic(client);
-  twt.checkNewUrl(client);
+  //twt.checkNewUrl(client);
   logger.info('Done Loading!');
 });
 
