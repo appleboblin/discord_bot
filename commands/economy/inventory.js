@@ -11,6 +11,6 @@ module.exports = {
   //permissions: ['SEND_MESSAGES'],
   //permissionError = 'You do not have permission to run this command.',
   callback: async (message, args, text) => {
-    check.chest(message);
+    check.inv(message);
   },
 };

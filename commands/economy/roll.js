@@ -3,6 +3,7 @@ const logger = require('../../util/logger');
 const roll = require('../../features/economy/rollBox');
 const Type = require('../../asset/shop/shopItems.json');
 const economy = require('../../features/economy/economy');
+const record = require('../../features/economy/recordItem');
 module.exports = {
   commands: ['roll'],
   description: 'Roll Loot Box',
@@ -66,6 +67,7 @@ module.exports = {
         // send item message
         itemsResult = items[result];
         trimmed = itemsResult.replace(/([A-Z])/g, ' $1').trim();
+        economy.addItem(guildId, userId, trimmed);
         return message.channel.send(`Item: ${trimmed}`);
         // if not enough balance, prompt the user
       } else {

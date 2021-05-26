@@ -52,13 +52,14 @@ module.exports.chest = async (message) => {
   }
 };
 
-module.exports.chest = async (message) => {
+module.exports.inv = async (message) => {
   const guildId = message.guild.id;
   const userId = message.author.id;
   const userTag = message.author.tag;
   const userName = message.author.username;
   const userNickname = message.member.nickname;
-  const result = await economy.getBox(guildId, userId);
+  const boxResult = await economy.getBox(guildId, userId);
+  const inventoryResult = await economy.getInventory(guildId, userId);
 
   let inventoryMenu = {
     embed: {
@@ -75,26 +76,46 @@ module.exports.chest = async (message) => {
       },
     },
   };
-  let inventory;
+  let chest;
   try {
     // make string look presentable
-    let total = JSON.stringify(result);
+    let total = JSON.stringify(boxResult);
     // using regular expression
-    inventory = total.replace(/[^:,0-9a-zA-Z]/g, '');
+    chest = total.replace(/[^:,0-9a-zA-Z]/g, '');
 
     const pay = await economy.getCoins(guildId, userId);
     inventoryMenu.embed.footer.text = `Remaining Cock Coins: ${pay}`;
     // prepare result for menu
-    inventory = inventory.replace(/[,]/g, '\n').replace(/[:]/g, ': ');
+    chest = chest.replace(/[,]/g, '\n').replace(/[:]/g, ': ');
   } catch {
     logger.error(`failed to open inventory`);
   } finally {
     // send info to menu
     inventoryMenu.embed.fields.push({
       name: `**Boxes**`,
-      value: `\`\`\`${inventory}\`\`\``,
+      value: `\`\`\`json\n${chest}\`\`\``,
       inline: true,
     });
-    message.channel.send(inventoryMenu);
   }
+  let inventory;
+  try {
+    // make string look presentable
+    let total = JSON.stringify(inventoryResult);
+    // using regular expression
+    inventory = total.replace(/[^:,0-9a-zA-Z]/g, '');
+    // prepare result for menu
+    inventory = inventory.replace(/[,]/g, '\n').replace(/[:]/g, ': ');
+    trimmed = inventory.replace(/([A-Z])/g, '$1').trim();
+  } catch {
+    logger.error(`failed to open inventory`);
+  } finally {
+    // send info to menu
+    inventoryMenu.embed.fields.push({
+      name: `**Items**`,
+      value: `\`\`\`json\n${trimmed}\`\`\``,
+      inline: false,
+    });
+  }
+
+  message.channel.send(inventoryMenu);
 };

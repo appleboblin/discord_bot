@@ -5,6 +5,7 @@ const itemList = require('../../asset/shop/shopItems.json');
 
 const coinsCache = {}; // { 'guildId-userId': coins }
 const boxCache = {}; // { 'guildId-userId': boxType }
+const inventoryCache = {}; // { 'guildId-userId': inventory }
 
 module.exports = (client) => {};
 
@@ -221,4 +222,73 @@ module.exports.removeBox = async (guildId, userId, boxToAdd) => {
   boxCache[`${guildId}-${userId}`] = result._doc.boxes;
 
   return inventory;
+};
+
+module.exports.getInventory = async (guildId, userId) => {
+  // look from cache
+  const cachedValue = inventoryCache[`${guildId}-${userId}`];
+  if (cachedValue) {
+    return cachedValue;
+  }
+  //logger.info('Running findOne()');
+
+  const result = await profileSchema.findOne({
+    guildId,
+    userId,
+  });
+  // make string look presentable
+  let total = JSON.stringify(result._doc.inventory);
+  // using regular expression
+  let inventory = total.replace(/[^:,0-9a-zA-Z]/g, '');
+  logger.info(
+    `RESULT: guildId: ${result._doc.guildId}, userId: ${result._doc.userId}, inventory: ${inventory}`
+  );
+
+  let coins = 0;
+  // get result
+  if (result) {
+    coins = result.coins;
+  } else {
+    logger.info('Inserting a document');
+    await new profileSchema({
+      guildId,
+      userId,
+      coins,
+    }).save();
+  }
+  // caching
+  inventoryCache[`${guildId}-${userId}`] = result._doc.inventory;
+
+  return result._doc.inventory;
+};
+
+module.exports.addItem = async (guildId, userId, itemToAdd) => {
+  let item = itemToAdd.toString();
+  let addItem = `inventory.${item}`;
+  try {
+    const result = await profileSchema.findOneAndUpdate(
+      {
+        guildId,
+        userId,
+      },
+      {
+        guildId,
+        userId,
+        $inc: {
+          [addItem]: 1,
+        },
+      },
+      {
+        upsert: true,
+        new: true,
+      }
+    );
+    // caching
+    inventoryCache[`${guildId}-${userId}`] = result._doc.inventory;
+    console.log('item Updated');
+  } catch {
+    logger.error(
+      `Failed to add ${itemToAdd} to guildId: ${guildId}, userId: ${userId}`
+    );
+  }
 };

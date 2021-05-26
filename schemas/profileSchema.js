@@ -34,6 +34,7 @@ const profileSchema = mongoose.Schema({
       default: 0,
     },
   },
+  inventory: {},
 });
 
 module.exports = mongoose.model('profiles', profileSchema);
