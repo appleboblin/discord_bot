@@ -3,7 +3,6 @@ const logger = require('../../util/logger');
 const roll = require('../../features/economy/rollBox');
 const Type = require('../../asset/shop/shopItems.json');
 const economy = require('../../features/economy/economy');
-const record = require('../../features/economy/recordItem');
 module.exports = {
   commands: ['roll'],
   description: 'Roll Loot Box',
