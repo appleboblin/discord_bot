@@ -58,3 +58,8 @@ client.once('error', (err) => {
   client.quit();
   reject(err);
 });
+
+process.on('unhandledRejection', (reason, p) => {
+  // check error
+  logger.info('Unhandled Rejection at: Promise', p, 'reason:', reason);
+});
