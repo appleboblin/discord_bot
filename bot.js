@@ -24,16 +24,15 @@ client.on('ready', async () => {
   await loadCommands(client);
   await loadFeatures(client);
   playMusic(client);
-  twt.checkNewUrl(client);
+  //twt.checkNewUrl(client);
   logger.info('Done Loading!');
 });
 
 //Login Discord
 //client.login(token.discord_token);
 client.login(discord_token);
-
 //Set Status
-client.once('ready', () => {
+client.on('ready', () => {
   logger.info(`${client.user.tag} is starting up...`);
 
   // Set launch status
@@ -44,6 +43,16 @@ client.once('ready', () => {
       type: 'PLAYING',
     },
   });
+  setInterval((activity) => {
+    // Set launch status
+    client.user.setPresence({
+      status: 'available',
+      activity: {
+        name: `${prefix}help for more info`,
+        type: 'PLAYING',
+      },
+    });
+  }, 3600000);
 });
 
 client.once('reconnecting', () => {
@@ -58,4 +67,9 @@ client.once('error', (err) => {
   logger.error('Discord client error:', err);
   client.quit();
   reject(err);
+});
+
+process.on('unhandledRejection', (reason, p) => {
+  // check error
+  logger.info('Unhandled Rejection at: Promise', p, 'reason:', reason);
 });

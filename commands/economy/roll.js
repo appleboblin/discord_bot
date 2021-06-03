@@ -66,6 +66,7 @@ module.exports = {
         // send item message
         itemsResult = items[result];
         trimmed = itemsResult.replace(/([A-Z])/g, ' $1').trim();
+        economy.addItem(guildId, userId, trimmed);
         return message.channel.send(`Item: ${trimmed}`);
         // if not enough balance, prompt the user
       } else {

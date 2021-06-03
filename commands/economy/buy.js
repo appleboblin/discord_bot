@@ -53,7 +53,7 @@ module.exports = {
         const pay = await economy.removeCoins(guildId, userId);
 
         // call inventory menu
-        inv.inventory(message);
+        inv.chest(message);
 
         // if not enough balance, prompt the user
       } else if (check === 0) {
