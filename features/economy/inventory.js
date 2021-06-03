@@ -76,6 +76,7 @@ module.exports.inv = async (message) => {
       },
     },
   };
+  let itemList = [];
   let chest;
   try {
     // make string look presentable
@@ -101,11 +102,15 @@ module.exports.inv = async (message) => {
   try {
     // make string look presentable
     let total = JSON.stringify(inventoryResult);
+
     // using regular expression
     inventory = total.replace(/[^:,0-9a-zA-Z]/g, '');
+    console.log(inventory);
     // prepare result for menu
-    inventory = inventory.replace(/[,]/g, '\n').replace(/[:]/g, ': ');
+    inventory = inventory.replace(/[:]/g, ': ');
+    //.replace(/[,]/g, '\n')
     trimmed = inventory.replace(/([A-Z])/g, '$1').trim();
+    itemList = trimmed.split(',');
   } catch {
     logger.error(`failed to open inventory`);
   } finally {
@@ -116,6 +121,12 @@ module.exports.inv = async (message) => {
       inline: false,
     });
   }
+  let page;
+  while (itemList.length > 0) {
+    page = itemList.splice(0, 3);
 
+    console.log(page);
+  }
+  //console.log(itemList);
   message.channel.send(inventoryMenu);
 };
